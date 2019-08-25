@@ -25,14 +25,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        boardfield.cpp \
+        boardview.cpp \
+        chessgame.cpp \
         main.cpp \
-        mainview.cpp
+        pawnmanager.cpp \
+        pawnmodel.cpp \
+        pawnposition.cpp
 
 HEADERS += \
-        mainview.h
+        boardfield.h \
+        boardview.h \
+        chessgame.h \
+        pawncolortype.h \
+        pawnmanager.h \
+        pawnmodel.h \
+        pawnposition.h
 
-FORMS += \
-        mainview.ui
+FORMS +=
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

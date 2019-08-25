@@ -1,12 +1,14 @@
-#include "mainview.h"
 #include <QApplication>
+#include <ChessGame.h>
 
-int main(int argc, char *argv[])
-{
+ChessGame *game;
+
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    MainView w;
-    w.show();
+    game = new ChessGame();
+    game->show();
+    game->start();
 
     return a.exec();
 }
