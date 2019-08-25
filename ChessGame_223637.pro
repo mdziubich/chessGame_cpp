@@ -50,3 +50,17 @@ FORMS +=
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    Images/bishop_black.svg \
+    Images/bishop_white.svg \
+    Images/king_black.svg \
+    Images/king_white.svg \
+    Images/knight_black.svg \
+    Images/knight_white.svg \
+    Images/pawn_black.svg \
+    Images/pawn_white.svg \
+    Images/queen_black.svg \
+    Images/queen_white.svg \
+    Images/rook_black.svg \
+    Images/rook_white.svg
