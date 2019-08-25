@@ -25,18 +25,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        actionbutton.cpp \
         boardfield.cpp \
         boardview.cpp \
-        chessgame.cpp \
+        game.cpp \
         main.cpp \
         pawnmanager.cpp \
         pawnmodel.cpp \
         pawnposition.cpp
 
 HEADERS += \
+        actionbutton.h \
         boardfield.h \
         boardview.h \
-        chessgame.h \
+        game.h \
         pawncolortype.h \
         pawnmanager.h \
         pawnmodel.h \

@@ -1,8 +1,8 @@
 #include "boardview.h"
 #include <boardfield.h>
-#include <chessgame.h>
+#include <game.h>
 
-extern ChessGame *game;
+extern Game *game;
 
 BoardView::BoardView() {
 }

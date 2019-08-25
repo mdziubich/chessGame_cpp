@@ -1,14 +1,14 @@
 #include <QApplication>
-#include <ChessGame.h>
+#include <Game.h>
 
-ChessGame *game;
+Game *game;
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    game = new ChessGame();
+    game = new Game();
     game->show();
-    game->start();
+    game->displayMainMenu();
 
     return a.exec();
 }
