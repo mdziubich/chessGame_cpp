@@ -20,6 +20,11 @@ public:
 public slots:
     void startGame();
     void quitGame();
+
+private:
+    void drawBoard();
+    void drawSettingsPanel();
+    void drawUserPanel();
 };
 
 #endif // GAME_H

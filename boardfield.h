@@ -5,7 +5,7 @@
 
 class BoardField: public QGraphicsPolygonItem {
 public:
-    BoardField();
+    BoardField(Qt::GlobalColor backgroundColor);
 
     static int defaultHeight;
 };

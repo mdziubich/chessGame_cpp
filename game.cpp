@@ -51,11 +51,34 @@ void Game::startGame() {
     // clear the screen
     scene->clear();
 
-    // display board
+    drawBoard();
+    drawSettingsPanel();
+    drawUserPanel();
+}
+
+void Game::quitGame() {
+
+}
+
+void Game::drawBoard() {
     board = new BoardView();
     board->draw();
 }
 
-void Game::quitGame() {
+void Game::drawSettingsPanel() {
+    QGraphicsTextItem *settingsTitle = new QGraphicsTextItem("Settings");
+    settingsTitle->setPos(600, 100);
+    scene->addItem(settingsTitle);
+
+    QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(600, 100, 300, 480);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(Qt::blue);
+    settingsPanel->setBrush(brush);
+    settingsPanel->setOpacity(0.5);
+    scene->addItem(settingsPanel);
+}
+
+void Game::drawUserPanel() {
 
 }

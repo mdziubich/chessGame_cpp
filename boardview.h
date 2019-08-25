@@ -14,7 +14,7 @@ private:
     QList<BoardField*> fields;
 
     void placeBoardFields();
-    void createFeildsColumn(int xPosition, int yPosition, int numberOfRows);
+    void createFeildsColumn(int xPosition, int yPosition, int numberOfRows, int columnNumber);
     void placePawns();
 };
 
