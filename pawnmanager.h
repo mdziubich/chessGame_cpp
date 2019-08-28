@@ -2,8 +2,7 @@
 #define PAWNMANAGER_H
 
 
-class PawnManager
-{
+class PawnManager {
 public:
     PawnManager();
 };

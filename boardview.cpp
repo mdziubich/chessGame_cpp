@@ -1,10 +1,13 @@
 #include "boardview.h"
 #include <boardfield.h>
 #include <game.h>
+#include <boardposition.h>
+#include <pawn.h>
 
 extern Game *game;
 
 BoardView::BoardView() {
+    numberOfColumns = 8;
 }
 
 void BoardView::draw() {
@@ -17,7 +20,6 @@ QList<BoardField*> BoardView::getFields() {
 }
 
 void BoardView::placeBoardFields() {
-    int numberOfColumns = 8;
     int startXPosition = 100;
     int yPosition = 100;
 
@@ -45,8 +47,9 @@ void BoardView::createFeildsColumn(int xPosition, int yPosition, int numberOfRow
             }
         }
 
-        BoardField *field = new BoardField(backgroundColor);
-        int filedYPosition = yPosition + (rowNumber * field->defaultHeight);
+        BoardPosition position = { columnNumber, rowNumber };
+        BoardField *field = new BoardField(backgroundColor, position);
+        int filedYPosition = yPosition + (rowNumber * BoardField::defaultHeight);
         field->setPos(xPosition, filedYPosition);
         fields.append(field);
         game->scene->addItem(field);
@@ -54,5 +57,25 @@ void BoardView::createFeildsColumn(int xPosition, int yPosition, int numberOfRow
 }
 
 void BoardView::placePawns() {
+    placePawnsForRow(0);
+    placePawnsForRow(1);
+    placePawnsForRow(6);
+    placePawnsForRow(7);
+}
+
+void BoardView::placePawnsForRow(int rowNumber) {
+    int startXPosition = 100;
+    int yPosition = 100;
+
+    for (int i = 0; i < numberOfColumns; i++) {
+        BoardPosition boardPosition = { i, rowNumber };
+        Pawn *pawn = pawn = new Pawn(boardPosition);
+
+        int pawnXPosition = startXPosition + (i * BoardField::defaultHeight);
+        int pawnYPosition = yPosition + (rowNumber * BoardField::defaultHeight);
+
+        pawn->setPos(pawnXPosition, pawnYPosition);
+        game->scene->addItem(pawn);
+    }
 
 }

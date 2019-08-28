@@ -1,5 +1,6 @@
-#include "pawnposition.h"
+#include "boardposition.h"
 
-PawnPosition::PawnPosition() {
-
+PawnPosition::PawnPosition(int x, int y) {
+    this->x = x;
+    this->y = y;
 }

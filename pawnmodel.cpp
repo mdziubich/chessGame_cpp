@@ -1,5 +1,5 @@
 #include "pawnmodel.h"
-#include "pawnposition.h"
+#include "boardposition.h"
 
 PawnModel::PawnModel() {
 //PawnModel::PawnModel(PawnPosition position) {

@@ -2,8 +2,9 @@
 #include "boardview.h"
 #include "actionbutton.h"
 #include <QGraphicsTextItem>
+#include <utils.h>
 
-Game::Game(QWidget *parent) {
+Game::Game() {
 
     int viewWidth = 1024;
     int viewHeight= 768;
@@ -34,7 +35,7 @@ void Game::displayMainMenu() {
     double buttonYPosition = 275;
     startButton->setPos(buttonXPosition, buttonYPosition);
 
-    connect(startButton, SIGNAL(clicked()), this, SLOT(startGame()));
+    connect(startButton, SIGNAL(buttonPressed()), this, SLOT(startGame()));
     scene->addItem(startButton);
 
     // create quit button
@@ -43,7 +44,7 @@ void Game::displayMainMenu() {
     double quitYPosition = 350;
     quitButton->setPos(quitXPosition, quitYPosition);
 
-    connect(quitButton, SIGNAL(clicked()), this, SLOT(quitGame()));
+    connect(quitButton, SIGNAL(buttonPressed()), this, SLOT(quitGame()));
     scene->addItem(quitButton);
 }
 
@@ -71,10 +72,7 @@ void Game::drawSettingsPanel() {
     scene->addItem(settingsTitle);
 
     QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(600, 100, 300, 480);
-    QBrush brush;
-    brush.setStyle(Qt::SolidPattern);
-    brush.setColor(Qt::blue);
-    settingsPanel->setBrush(brush);
+    Utils::setBackgroundColor(Qt::blue, settingsPanel);
     settingsPanel->setOpacity(0.5);
     scene->addItem(settingsPanel);
 }

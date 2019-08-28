@@ -2,10 +2,11 @@
 #include <QBrush>
 #include <QGraphicsRectItem>
 #include <QFont>
+#include <utils.h>
 
 ActionButton::ActionButton(QString title) {
     setRect(0, 0, 200, 50);
-    setBackgroundColor(Qt::darkCyan);
+    Utils::setBackgroundColor(Qt::darkCyan, this);
 
     QGraphicsTextItem *text = new QGraphicsTextItem(title, this);
     QFont textFont("avenir", 20);
@@ -20,20 +21,13 @@ ActionButton::ActionButton(QString title) {
 }
 
 void ActionButton::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    emit clicked();
+    emit buttonPressed();
 }
 
 void ActionButton::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-    setBackgroundColor(Qt::cyan);
+    Utils::setBackgroundColor(Qt::cyan, this);
 }
 
 void ActionButton::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-    setBackgroundColor(Qt::darkCyan);
-}
-
-void ActionButton::setBackgroundColor(Qt::GlobalColor color) {
-    QBrush brush;
-    brush.setStyle((Qt::SolidPattern));
-    brush.setColor(color);
-    setBrush(brush);
+    Utils::setBackgroundColor(Qt::darkCyan, this);
 }

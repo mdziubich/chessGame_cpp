@@ -1,9 +1,11 @@
 #include "boardfield.h"
-#include <QBrush>
+#include <utils.h>
 
 int BoardField::defaultHeight = 60;
 
-BoardField::BoardField(Qt::GlobalColor backgroundColor) {
+BoardField::BoardField(Qt::GlobalColor backgroundColor, BoardPosition position) {
+
+    this->position = position;
 
     // points needed to draw square
     QVector<QPointF> points;
@@ -16,9 +18,5 @@ BoardField::BoardField(Qt::GlobalColor backgroundColor) {
     QPolygonF square(points);
     setPolygon(square);
 
-    // set background color
-    QBrush brush;
-    brush.setStyle((Qt::SolidPattern));
-    brush.setColor(backgroundColor);
-    setBrush(brush);
+    Utils::setBackgroundColor(backgroundColor, this);
 }

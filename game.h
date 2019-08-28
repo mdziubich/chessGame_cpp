@@ -9,7 +9,7 @@
 class Game : public QGraphicsView {
     Q_OBJECT
 public:
-    Game(QWidget *parent = NULL);
+    Game();
 
     QGraphicsScene *scene;
     QString whosTurnLabel;

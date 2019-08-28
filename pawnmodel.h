@@ -2,8 +2,7 @@
 #define PAWNMODEL_H
 
 
-class PawnModel
-{
+class PawnModel {
 public:
     PawnModel();
 };

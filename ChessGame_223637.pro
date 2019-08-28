@@ -30,19 +30,21 @@ SOURCES += \
         boardview.cpp \
         game.cpp \
         main.cpp \
+        pawn.cpp \
         pawnmanager.cpp \
-        pawnmodel.cpp \
-        pawnposition.cpp
+        utils.cpp
 
 HEADERS += \
         actionbutton.h \
         boardfield.h \
+        boardposition.h \
         boardview.h \
         game.h \
+        helpers.h \
+        pawn.h \
         pawncolortype.h \
         pawnmanager.h \
-        pawnmodel.h \
-        pawnposition.h
+        utils.h
 
 FORMS +=
 
@@ -51,16 +53,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    Images/bishop_black.svg \
-    Images/bishop_white.svg \
-    Images/king_black.svg \
-    Images/king_white.svg \
-    Images/knight_black.svg \
-    Images/knight_white.svg \
-    Images/pawn_black.svg \
-    Images/pawn_white.svg \
-    Images/queen_black.svg \
-    Images/queen_white.svg \
-    Images/rook_black.svg \
-    Images/rook_white.svg
+DISTFILES +=
+
+RESOURCES += \
+    resources.qrc

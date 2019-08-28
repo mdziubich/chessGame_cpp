@@ -16,7 +16,7 @@ public:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 signals:
-    void clicked();
+    void buttonPressed();
 
 private:
     void setBackgroundColor(Qt::GlobalColor color);
