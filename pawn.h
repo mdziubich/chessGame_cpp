@@ -1,7 +1,8 @@
 #ifndef PAWN_H
 #define PAWN_H
 
-#include <QGraphicsPolygonItem>
+#include <QGraphicsRectItem>
+#include <QGraphicsSceneMouseEvent>
 #include <boardposition.h>
 
 enum class PawnType {
@@ -18,11 +19,15 @@ enum class PlayerType {
     playerTwo
 };
 
-class Pawn: public QGraphicsPolygonItem {
+class Pawn: public QGraphicsRectItem {
 
 public:
-    Pawn(BoardPosition position);
+    Pawn(BoardPosition position, QGraphicsItem *parent = nullptr);
 
+    PlayerType owner;
+
+    void setPosition(BoardPosition position);
+    BoardPosition getPosition();
 private:
     BoardPosition position;
 

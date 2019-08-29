@@ -1,15 +1,22 @@
 #ifndef BOARDFIELD_H
 #define BOARDFIELD_H
 
-#include <QGraphicsPolygonItem>
+#include <QGraphicsRectItem>
+#include <QGraphicsSceneMouseEvent>
 #include <boardposition.h>
 
-class BoardField: public QGraphicsPolygonItem {
+class BoardField: public QGraphicsRectItem {
 public:
-    BoardField(Qt::GlobalColor backgroundColor, BoardPosition position);
+    BoardField(Qt::GlobalColor backgroundColor,
+               BoardPosition position,
+               QGraphicsItem *parent = nullptr);
 
-    static int defaultHeight;
+    static int defaultWidthHeight;
+    bool isPlaced;
 
+    BoardPosition getPosition();
+
+private:
     BoardPosition position;
 };
 

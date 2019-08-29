@@ -1,23 +1,34 @@
 #ifndef BOARDVIEW_H
 #define BOARDVIEW_H
 
+#include <QGraphicsRectItem>
 #include <QList>
-#include <boardfield.h>
+#include <QPoint>
+#include "boardfield.h"
+#include "pawn.h"
 
-class BoardView {
+class BoardView: public QGraphicsRectItem {
 
 public:
     BoardView();
 
-    void draw();
+    static int numberOfRowsColumns;
+    static int startXPosition;
+    static int startYPosition;
+
     QList<BoardField*> getFields();
+    void draw();
+    Pawn* getPawnAtBoardPosition(BoardPosition boardPosition);
+    Pawn* getPawnAtMousePosition(QPoint point);
+    void placePawnAtBoardPosition(Pawn *pawn, BoardPosition boardPosition);
+    void moveActivePawnToMousePosition(QPoint point, Pawn *pawn);
 
 private:
     QList<BoardField*> fields;
-    int numberOfColumns;
+    QList<Pawn*> pawns;
 
     void placeBoardFields();
-    void createFeildsColumn(int xPosition, int yPosition, int numberOfRows, int columnNumber);
+    void createFieldsColumn(int xPosition, int columnNumber);
     void placePawns();
     void placePawnsForRow(int rowNumber);
 };

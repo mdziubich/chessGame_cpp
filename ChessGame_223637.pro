@@ -28,7 +28,8 @@ SOURCES += \
         actionbutton.cpp \
         boardfield.cpp \
         boardview.cpp \
-        game.cpp \
+        boardviewmodel.cpp \
+        gameview.cpp \
         main.cpp \
         pawn.cpp \
         pawnmanager.cpp \
@@ -39,7 +40,8 @@ HEADERS += \
         boardfield.h \
         boardposition.h \
         boardview.h \
-        game.h \
+        boardviewmodel.h \
+        gameview.h \
         helpers.h \
         pawn.h \
         pawncolortype.h \

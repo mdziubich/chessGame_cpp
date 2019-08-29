@@ -1,26 +1,26 @@
 #include "pawn.h"
 #include "boardfield.h"
 #include "boardposition.h"
+#include "gameview.h"
 #include <QLabel>
 #include <QGraphicsProxyWidget>
 
-Pawn::Pawn(BoardPosition position) {
+extern GameView *game;
 
+Pawn::Pawn(BoardPosition position, QGraphicsItem *parent): QGraphicsRectItem(parent) {
     this->position = position;
-    int defaultHeight = BoardField::defaultHeight;
+    owner = getPlayerForInitialPosition(position);
 
-    // points needed to draw square
-    QVector<QPointF> points;
-    points << QPointF(0, 0)
-           << QPointF(defaultHeight, 0)
-           << QPointF(defaultHeight, defaultHeight)
-           << QPointF(0, defaultHeight);
-
-    // create a polygon
-    QPolygonF square(points);
-    setPolygon(square);
-
+    setPen(Qt::NoPen);
     setInitialImage();
+}
+
+void Pawn::setPosition(BoardPosition position) {
+    this->position = position;
+}
+
+BoardPosition Pawn::getPosition() {
+    return position;
 }
 
 void Pawn::setInitialImage() {
