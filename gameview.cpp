@@ -140,6 +140,8 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
 
     // check for rook's castling
 
+    // check if pawn can be promoted
+
     // remove opposite player pawn
 
     // check for king's check

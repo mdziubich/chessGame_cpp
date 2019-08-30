@@ -110,6 +110,17 @@ bool BoardViewModel::isCastlingAvailable() {
     return false;
 }
 
+/*
+    Promotion in chess is a rule that requires a pawn that reaches its eighth rank to be immediately
+    replaced by the player's choice of a queen, knight, rook, or bishop of the same color.
+    The new piece replaces the pawn, as part of the same move.
+    The choice of new piece is not limited to pieces previously captured, thus promotion can result in a player owning,
+    for example, two or more queens despite starting the game with one.
+ */
+bool BoardViewModel::isPawnPromotionAvailable() {
+    return false;
+}
+
 BoardPosition BoardViewModel::getBoardPositionForMousePosition(QPoint point) {
     int xPosition = static_cast<int>(floor((point.x() - BoardView::startXPosition)/BoardField::defaultWidthHeight));
     int yPosition = static_cast<int>(floor((point.y() - BoardView::startYPosition)/BoardField::defaultWidthHeight));
@@ -163,7 +174,11 @@ bool BoardViewModel::validateQueenPawnMove(BoardPosition positionToMove) {
         return false;
     }
 
-    return false;
+    if (validateRookPawnMove(positionToMove)) {
+        return true;
+    }
+
+    return validateBishopPawnMove(positionToMove);
 }
 
 bool BoardViewModel::validateRookPawnMove(BoardPosition positionToMove) {

@@ -26,6 +26,7 @@ public:
     bool validatePawnMove(BoardPosition positionToMove);
     void switchRound();
     bool isCastlingAvailable();
+    bool isPawnPromotionAvailable();
 
     bool shouldReplaceActivePawnWithQueen();
 
