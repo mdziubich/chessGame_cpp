@@ -164,7 +164,11 @@ bool BoardViewModel::validateKingPawnMove(BoardPosition positionToMove) {
         return false;
     }
 
-    return false;
+    int xDiference = positionToMove.x - activePawn->position.x;
+    int yDiference = positionToMove.y - activePawn->position.y;
+    int numbeOfFieldsToCheck = std::max(abs(xDiference), abs(yDiference));
+
+    return (numbeOfFieldsToCheck == 1);
 }
 
 bool BoardViewModel::validateQueenPawnMove(BoardPosition positionToMove) {

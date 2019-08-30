@@ -136,6 +136,8 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
         return;
     }
 
+    // Players cannot make any move that places their own king in check.
+
     // check if field was taken by opposite player
 
     // check for rook's castling
