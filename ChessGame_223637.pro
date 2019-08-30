@@ -31,8 +31,9 @@ SOURCES += \
         boardviewmodel.cpp \
         gameview.cpp \
         main.cpp \
-        pawn.cpp \
-        pawnmanager.cpp \
+        pawnfield.cpp \
+        pawnmodel.cpp \
+        pawnviemodel.cpp \
         utils.cpp
 
 HEADERS += \
@@ -43,9 +44,9 @@ HEADERS += \
         boardviewmodel.h \
         gameview.h \
         helpers.h \
-        pawn.h \
-        pawncolortype.h \
-        pawnmanager.h \
+        pawnfield.h \
+        pawnmodel.h \
+        pawnviewmodel.h \
         utils.h
 
 FORMS +=

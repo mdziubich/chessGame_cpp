@@ -1,7 +1,8 @@
 #include "pawnmodel.h"
-#include "boardposition.h"
 
-PawnModel::PawnModel() {
-//PawnModel::PawnModel(PawnPosition position) {
-
+PawnModel::PawnModel(BoardPosition position, PlayerType owner, PawnType type, QString imagePath) {
+    this->position = position;
+    this->owner = owner;
+    this->type = type;
+    this->imagePath = imagePath;
 }

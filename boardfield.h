@@ -12,7 +12,6 @@ public:
                QGraphicsItem *parent = nullptr);
 
     static int defaultWidthHeight;
-    bool isPlaced;
 
     BoardPosition getPosition();
 

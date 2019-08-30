@@ -5,7 +5,7 @@
 #include <QList>
 #include <QPoint>
 #include "boardfield.h"
-#include "pawn.h"
+#include "pawnfield.h"
 
 class BoardView: public QGraphicsRectItem {
 
@@ -18,19 +18,19 @@ public:
 
     QList<BoardField*> getFields();
     void draw();
-    Pawn* getPawnAtBoardPosition(BoardPosition boardPosition);
-    Pawn* getPawnAtMousePosition(QPoint point);
-    void placePawnAtBoardPosition(Pawn *pawn, BoardPosition boardPosition);
-    void moveActivePawnToMousePosition(QPoint point, Pawn *pawn);
+    void initializePawnFields(QList<PawnModel*> pawns);
+    PawnField* getPawnAtBoardPosition(BoardPosition boardPosition);
+    PawnField* getPawnAtMousePosition(QPoint point);
+    void moveActivePawnToMousePosition(QPoint point, PawnModel *pawn);
+    void placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition);
 
 private:
     QList<BoardField*> fields;
-    QList<Pawn*> pawns;
+    QList<PawnField*> pawns;
 
     void placeBoardFields();
     void createFieldsColumn(int xPosition, int columnNumber);
-    void placePawns();
-    void placePawnsForRow(int rowNumber);
+    QPointF getCoordinatesForBoardPosition(BoardPosition position);
 };
 
 #endif // BOARDVIEW_H

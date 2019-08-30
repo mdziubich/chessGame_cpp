@@ -19,8 +19,6 @@ GameView::GameView() {
     scene->setSceneRect(0, 0, viewWidth, viewHeight);
     setScene(scene);
 
-    whosTurn = PlayerType::playerOne;
-    activePawn = nullptr;
     gameStarted = false;
 }
 
@@ -71,6 +69,8 @@ void GameView::quitGame() {
 void GameView::drawBoard() {
     board = new BoardView();
     board->draw();
+    board->initializePawnFields(boardViewModel.getBlackPawns());
+    board->initializePawnFields(boardViewModel.getWhitePawns());
 }
 
 void GameView::drawSettingsPanel() {
@@ -91,60 +91,50 @@ void GameView::drawUserPanel() {
 void GameView::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::RightButton) {
         releaseActivePawn();
-    } else if (activePawn) {
-        moveActivePawnToSelectedPoint(event->pos());
+    } else if (boardViewModel.getActivePawn()) {
+        handleSelectingPointForActivePawnByMouse(event->pos());
     } else if (gameStarted) {
-        // select pawn
-        Pawn *pawn = board->getPawnAtMousePosition(event->pos());
+        PawnField *pawn = board->getPawnAtMousePosition(event->pos());
         selectPawn(pawn);
     }
 
     QGraphicsView::mousePressEvent(event);
 }
 
-void GameView::moveActivePawnToSelectedPoint(QPoint point) {
-    if (boardViewModel.validatePawnPalcementForMousePosition(point)) {
-        BoardPosition boardPosition = boardViewModel.getBoardPositionForMousePosition(point);
-        board->placePawnAtBoardPosition(activePawn, boardPosition);
-        activePawn = nullptr;
-    }
-}
-
 void GameView::mouseMoveEvent(QMouseEvent *event) {
     // if there is a pawn selected, then make it follow the mouse
-    if (activePawn) {
-        board->moveActivePawnToMousePosition(event->pos(), activePawn);
+    if (boardViewModel.getActivePawn()) {
+        board->moveActivePawnToMousePosition(event->pos(), boardViewModel.getActivePawn());
     }
 
     QGraphicsView::mouseMoveEvent(event);
 }
 
 
-void GameView::selectPawn(Pawn *pawn) {
+void GameView::selectPawn(PawnField *pawn) {
     if (pawn == nullptr) {
         return;
     }
 
-    if (pawn->owner == whosTurn) {
-        activePawn = pawn;
-        // move selected pawn to the front
-        activePawn->setZValue(1);
-    }
+    boardViewModel.setActivePawnForField(pawn);
 }
 
-void GameView::placePawnOnField(BoardField *field) {
-    if (activePawn == nullptr) {
+void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
+    if (boardViewModel.getActivePawn() == nullptr) {
         return;
     }
-    // if this filed is NOT placed then validate move and place pawn if possible
 
-    // if this field is placed then validate move and remove opposite pawn if possible
+    // check if mouse selected place on board
+    if (!boardViewModel.validatePawnPalcementForMousePosition(point)) {
+        return;
+    }
 
-    activePawn->setPos(field->pos());
-    activePawn->setPosition(field->getPosition());
-    activePawn->setZValue(0);
+    BoardPosition boardPosition = boardViewModel.getBoardPositionForMousePosition(point);
 
     // first validate Move
+    if (!boardViewModel.validatePawnMove(boardPosition)) {
+        return;
+    }
 
     // check if field was taken by opposite player
 
@@ -154,20 +144,27 @@ void GameView::placePawnOnField(BoardField *field) {
 
     // check is game is over
 
-    // clear active pawn
-    activePawn = nullptr;
+    // move active pawn to new position
+    moveActivePawnToSelectedPoint(point);
 
     // change round owner to opposite player
+    boardViewModel.switchRound();
+}
+
+//update pawn field position and pawn model position
+void GameView::moveActivePawnToSelectedPoint(QPoint point) {
+    BoardPosition boardPosition = boardViewModel.getBoardPositionForMousePosition(point);
+    board->placeActivePawnAtBoardPosition(boardViewModel.getActivePawn(), boardPosition);
+    boardViewModel.setNewPositionForActivePawn(boardPosition);
+    boardViewModel.discardActivePawn();
 }
 
 void GameView::releaseActivePawn() {
-    if (activePawn == nullptr) {
+    if (boardViewModel.getActivePawn() == nullptr) {
         return;
     }
 
-    QPointF coordinates = boardViewModel.getCoordinatesForBoardPosition(activePawn->getPosition());
-    activePawn->setPos(coordinates);
-    activePawn->setZValue(0);
-
-    activePawn = nullptr;
+    PawnModel *activePawn = boardViewModel.getActivePawn();
+    board->placeActivePawnAtBoardPosition(activePawn, activePawn->position);
+    boardViewModel.discardActivePawn();
 }

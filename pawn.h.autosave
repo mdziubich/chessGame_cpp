@@ -5,26 +5,12 @@
 #include <QGraphicsSceneMouseEvent>
 #include <boardposition.h>
 
-enum class PawnType {
-    king,
-    queen,
-    rook,
-    bishop,
-    knight,
-    pawn
-};
-
-enum class PlayerType {
-    playerOne,
-    playerTwo
-};
-
 class Pawn: public QGraphicsRectItem {
 
 public:
     Pawn(BoardPosition position, QGraphicsItem *parent = nullptr);
 
-    PlayerType owner;
+    bool didTakeInitialMove;
 
     void setPosition(BoardPosition position);
     BoardPosition getPosition();

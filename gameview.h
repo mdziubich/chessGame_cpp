@@ -7,7 +7,7 @@
 #include <QMouseEvent>
 #include "boardview.h"
 #include "boardviewmodel.h"
-#include "pawn.h"
+#include "pawnfield.h"
 
 class GameView : public QGraphicsView {
     Q_OBJECT
@@ -16,9 +16,6 @@ public:
     GameView();
 
     QGraphicsScene *scene;
-    PlayerType whosTurn;
-    BoardView *board;
-    Pawn *activePawn;
 
     void displayMainMenu();
 
@@ -27,16 +24,17 @@ public slots:
     void quitGame();
 
 private:
-    bool gameStarted;
     BoardViewModel boardViewModel;
+    bool gameStarted;
+    BoardView *board;
 
     void drawBoard();
     void drawSettingsPanel();
     void drawUserPanel();
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    void selectPawn(Pawn *pawn);
-    void placePawnOnField(BoardField *field);
+    void selectPawn(PawnField *pawn);
+    void handleSelectingPointForActivePawnByMouse(QPoint point);
     void moveActivePawnToSelectedPoint(QPoint point);
     void releaseActivePawn();
 };

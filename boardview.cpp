@@ -2,7 +2,7 @@
 #include <boardfield.h>
 #include <gameview.h>
 #include <boardposition.h>
-#include <pawn.h>
+#include <pawnfield.h>
 
 extern GameView *game;
 
@@ -16,33 +16,53 @@ BoardView::BoardView() {
     game->scene->addItem(this);
 }
 
-void BoardView::draw() {
-    placeBoardFields();
-    placePawns();
-}
-
 QList<BoardField*> BoardView::getFields() {
     return fields;
 }
 
-void BoardView::placePawnAtBoardPosition(Pawn *pawn, BoardPosition boardPosition) {
-    int newXPosition = startXPosition + boardPosition.x * BoardField::defaultWidthHeight;
-    int newYPosition = startYPosition + boardPosition.y * BoardField::defaultWidthHeight;
-
-    pawn->setPos(newXPosition, newYPosition);
-    pawn->setPosition(boardPosition);
+void BoardView::draw() {
+    placeBoardFields();
 }
 
-void BoardView::moveActivePawnToMousePosition(QPoint point, Pawn *pawn) {
+void BoardView::initializePawnFields(QList<PawnModel*> pawns) {
+    for (int i = 0; i < pawns.length(); i++) {
+        PawnModel *pawnModel = pawns[i];
+        PawnField *pawn = new PawnField(pawnModel->position, pawnModel->imagePath, this);
+
+        int pawnXPosition = startXPosition + pawnModel->position.x * BoardField::defaultWidthHeight;
+        int pawnYPosition = startYPosition + pawnModel->position.y * BoardField::defaultWidthHeight;
+
+        pawn->setRect(0, 0, BoardField::defaultWidthHeight, BoardField::defaultWidthHeight);
+        pawn->setPos(pawnXPosition, pawnYPosition);
+
+        this->pawns.append(pawn);
+    }
+}
+
+void BoardView::moveActivePawnToMousePosition(QPoint point, PawnModel *pawn) {
     int xPosition = point.x() - BoardField::defaultWidthHeight/2;
     int yPosition = point.y() - BoardField::defaultWidthHeight/2;
+    PawnField *pawnField = getPawnAtBoardPosition(pawn->position);
 
-    pawn->setPos(xPosition, yPosition);
+    if (pawnField) {
+        pawnField->setPos(xPosition, yPosition);
+    }
 }
 
-Pawn* BoardView::getPawnAtMousePosition(QPoint point) {
+void BoardView::placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition) {
+    PawnField *pawnField = getPawnAtBoardPosition(pawn->position);
+
+    if (pawnField) {
+        QPointF coordinates = getCoordinatesForBoardPosition(boardPosition);
+        pawnField->setZValue(0);
+        pawnField->setPos(coordinates);
+        pawnField->setPosition(boardPosition);
+    }
+}
+
+PawnField* BoardView::getPawnAtMousePosition(QPoint point) {
     for (int i = 0; i < pawns.length(); i++) {
-        Pawn *pawn = pawns[i];
+        PawnField *pawn = pawns[i];
         QPointF pawnPos = pawn->pos();
 
         if ((point.x() < (pawnPos.x() + pawn->rect().width())) &&
@@ -56,7 +76,7 @@ Pawn* BoardView::getPawnAtMousePosition(QPoint point) {
     return nullptr;
 }
 
-Pawn* BoardView::getPawnAtBoardPosition(BoardPosition boardPosition) {
+PawnField* BoardView::getPawnAtBoardPosition(BoardPosition boardPosition) {
     for (int i = 0; i < pawns.length(); i++) {
         BoardPosition pawnPosition = pawns[i]->getPosition();
 
@@ -104,24 +124,9 @@ void BoardView::createFieldsColumn(int xPosition, int columnNumber) {
     }
 }
 
-void BoardView::placePawns() {
-    placePawnsForRow(0);
-    placePawnsForRow(1);
-    placePawnsForRow(6);
-    placePawnsForRow(7);
-}
+QPointF BoardView::getCoordinatesForBoardPosition(BoardPosition position) {
+    int xPosition = startXPosition + position.x*BoardField::defaultWidthHeight;
+    int yPosition = startYPosition + position.y*BoardField::defaultWidthHeight;
 
-void BoardView::placePawnsForRow(int rowNumber) {
-    for (int i = 0; i < numberOfRowsColumns; i++) {
-        BoardPosition boardPosition = { i, rowNumber };
-        Pawn *pawn = pawn = new Pawn(boardPosition, this);
-
-        int pawnXPosition = startXPosition + i * BoardField::defaultWidthHeight;
-        int pawnYPosition = startYPosition + rowNumber * BoardField::defaultWidthHeight;
-
-        pawn->setRect(0, 0, BoardField::defaultWidthHeight, BoardField::defaultWidthHeight);
-        pawn->setPos(pawnXPosition, pawnYPosition);
-
-        pawns.append(pawn);
-    }
+    return QPointF(xPosition, yPosition);
 }
