@@ -138,6 +138,8 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
 
     // check if field was taken by opposite player
 
+    // check for rook's castling
+
     // remove opposite player pawn
 
     // check for king's check

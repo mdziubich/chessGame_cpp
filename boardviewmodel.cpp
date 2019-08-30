@@ -99,6 +99,17 @@ void BoardViewModel::switchRound() {
     }
 }
 
+/*
+    Castling consists of moving the king two squares towards a rook on the player's first rank,
+    Castling may only be done if the king has never moved, the rook involved has never moved,
+    the squares between the king and the rook involved are unoccupied, the king is not in check,
+    and the king does not cross over or end on a square attacked by an enemy piece.
+    Castling is one of the rules of chess and is technically a king move
+*/
+bool BoardViewModel::isCastlingAvailable() {
+    return false;
+}
+
 BoardPosition BoardViewModel::getBoardPositionForMousePosition(QPoint point) {
     int xPosition = static_cast<int>(floor((point.x() - BoardView::startXPosition)/BoardField::defaultWidthHeight));
     int yPosition = static_cast<int>(floor((point.y() - BoardView::startYPosition)/BoardField::defaultWidthHeight));
@@ -162,7 +173,11 @@ bool BoardViewModel::validateRookPawnMove(BoardPosition positionToMove) {
         return false;
     }
 
-    return false;
+    if ((positionToMove.x != activePawn->position.x) && (positionToMove.y != activePawn->position.y)) {
+        return false;
+    }
+
+    return validateAnotherPawnIntersection(positionToMove);
 }
 
 bool BoardViewModel::validateBishopPawnMove(BoardPosition positionToMove) {
@@ -179,33 +194,7 @@ bool BoardViewModel::validateBishopPawnMove(BoardPosition positionToMove) {
         return false;
     }
 
-    if (abs(xDiference) == 1) {
-        return true;
-    }
-
-    for (int i = 1; i < abs(xDiference); i++) {
-        BoardPosition positionToCheck;
-
-        if (xDiference < 0) {
-            if (yDiference < activePawn->position.y) {
-                positionToCheck = { activePawn->position.x + (xDiference + i), activePawn->position.y + (yDiference + i) };
-            } else {
-                positionToCheck = { activePawn->position.x + (xDiference + i), activePawn->position.y + (yDiference - i) };
-            }
-        } else if (yDiference < 0) {
-            positionToCheck = { activePawn->position.x + (xDiference - i), activePawn->position.y + (yDiference + i) };
-        } else {
-            positionToCheck = { activePawn->position.x + (xDiference - i), activePawn->position.y + (yDiference - i) };
-        }
-
-        PawnModel *pawnToCheck = getPawnOnBoardPosition(positionToCheck);
-
-        if (pawnToCheck) {
-            return false;
-        }
-    }
-
-    return true;
+    return validateAnotherPawnIntersection(positionToMove);
 }
 
 bool BoardViewModel::validateKnightPawnMove(BoardPosition positionToMove) {
@@ -249,6 +238,52 @@ bool BoardViewModel::validateBasePawnMove(BoardPosition positionToMove) {
     The option to capture the moved pawn en passant must be exercised on the move immediately following the double-step pawn advance,
     or it is lost for the remainder of the game.
     */
+    return true;
+}
+
+bool BoardViewModel::validateAnotherPawnIntersection(BoardPosition positionToMove) {
+    int xDiference = positionToMove.x - activePawn->position.x;
+    int yDiference = positionToMove.y - activePawn->position.y;
+    int numbeOfFieldsToCheck = std::max(abs(xDiference), abs(yDiference));
+
+    if (numbeOfFieldsToCheck == 1) {
+        return true;
+    }
+
+    for (int i = 0; i < numbeOfFieldsToCheck; i++) {
+        BoardPosition positionToCheck;
+
+        if (xDiference < 0) {
+            if (yDiference == 0) {
+                positionToCheck = { activePawn->position.x + (xDiference + i), activePawn->position.y };
+            } else if (yDiference < activePawn->position.y) {
+                positionToCheck = { activePawn->position.x + (xDiference + i), activePawn->position.y + (yDiference + i) };
+            } else {
+                positionToCheck = { activePawn->position.x + (xDiference + i), activePawn->position.y + (yDiference - i) };
+            }
+        } else if (yDiference < 0) {
+            if (xDiference == 0) {
+                positionToCheck = { activePawn->position.x, activePawn->position.y + (yDiference + i) };
+            } else {
+                positionToCheck = { activePawn->position.x + (xDiference - i), activePawn->position.y + (yDiference + i) };
+            }
+        } else {
+            if (xDiference == 0) {
+                positionToCheck = { activePawn->position.x, activePawn->position.y + (yDiference - i) };
+            } else if (yDiference == 0) {
+                positionToCheck = { activePawn->position.x + (xDiference - i), activePawn->position.y };
+            } else {
+                positionToCheck = { activePawn->position.x + (xDiference - i), activePawn->position.y + (yDiference - i) };
+            }
+        }
+
+        PawnModel *pawnToCheck = getPawnOnBoardPosition(positionToCheck);
+
+        if (pawnToCheck) {
+            return false;
+        }
+    }
+
     return true;
 }
 

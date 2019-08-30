@@ -25,6 +25,7 @@ public:
     bool validatePawnPalcementForMousePosition(QPoint position);
     bool validatePawnMove(BoardPosition positionToMove);
     void switchRound();
+    bool isCastlingAvailable();
 
     bool shouldReplaceActivePawnWithQueen();
 
@@ -45,6 +46,7 @@ private:
     bool validateBishopPawnMove(BoardPosition positionToMove);
     bool validateKnightPawnMove(BoardPosition positionToMove);
     bool validateBasePawnMove(BoardPosition positionToMove);
+    bool validateAnotherPawnIntersection(BoardPosition positionToMove);
     bool isFieldOccupiedByEnemy(BoardPosition fieldPosition);
 };
 
