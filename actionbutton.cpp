@@ -6,7 +6,9 @@
 
 ActionButton::ActionButton(QString title) {
     setRect(0, 0, 200, 50);
-    Utils::setBackgroundColor(Qt::darkCyan, this);
+
+    QColor backgroundColor = QColor(157, 128, 101);
+    Utils::setBackgroundColor(backgroundColor, this);
 
     QGraphicsTextItem *text = new QGraphicsTextItem(title, this);
     QFont textFont("avenir", 20);
@@ -25,9 +27,11 @@ void ActionButton::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ActionButton::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-    Utils::setBackgroundColor(Qt::cyan, this);
+    QColor backgroundColor = QColor(196, 178, 140);
+    Utils::setBackgroundColor(backgroundColor, this);
 }
 
 void ActionButton::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-    Utils::setBackgroundColor(Qt::darkCyan, this);
+    QColor backgroundColor = QColor(157, 128, 101);
+    Utils::setBackgroundColor(backgroundColor, this);
 }

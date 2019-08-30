@@ -1,8 +1,11 @@
 #include "boardview.h"
-#include <boardfield.h>
-#include <gameview.h>
-#include <boardposition.h>
-#include <pawnfield.h>
+#include <QLabel>
+#include "boardfield.h"
+#include "boardposition.h"
+#include "boardframefield.h"
+#include "gameview.h"
+#include "pawnfield.h"
+#include "utils.h"
 
 extern GameView *game;
 
@@ -22,6 +25,7 @@ QList<BoardField*> BoardView::getFields() {
 
 void BoardView::draw() {
     placeBoardFields();
+    drawBoardFrame();
 }
 
 void BoardView::initializePawnFields(QList<PawnModel*> pawns) {
@@ -98,18 +102,18 @@ void BoardView::placeBoardFields() {
 // creates a column of fields at the specified location with specified number of rows
 void BoardView::createFieldsColumn(int xPosition, int columnNumber) {
     for (int rowNumber = 0; rowNumber < numberOfRowsColumns; rowNumber++) {
-        Qt::GlobalColor backgroundColor;
+        QColor backgroundColor;
         if (columnNumber % 2 == 0) {
             if (rowNumber % 2 == 0) {
-                backgroundColor = Qt::white;
+                backgroundColor = QColor(196, 178, 140);
             } else {
-                backgroundColor = Qt::black;
+                backgroundColor = QColor(157, 128, 101);
             }
         } else {
             if (rowNumber % 2 == 0) {
-                backgroundColor = Qt::black;
+                backgroundColor = QColor(157, 128, 101);
             } else {
-                backgroundColor = Qt::white;
+                backgroundColor = QColor(196, 178, 140);
             }
         }
 
@@ -122,6 +126,49 @@ void BoardView::createFieldsColumn(int xPosition, int columnNumber) {
                        BoardField::defaultWidthHeight);
         fields.append(field);
     }
+}
+
+void BoardView::drawBoardFrame() {
+    QString lettersTitles[] = {"A", "B", "C", "D", "E", "F", "G", "H"};
+    QString numberTitles[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+
+    for (int i = 0; i< numberOfRowsColumns; i++ ) {
+        int xPosition = startXPosition + i * BoardField::defaultWidthHeight;
+        QPoint point = QPoint(xPosition, 70);
+        QRectF rect = QRectF(0, 0, BoardField::defaultWidthHeight, 30);
+        drawBoardFrameAtPosition(point, rect, lettersTitles[i]);
+    }
+
+    for (int i = 0; i< numberOfRowsColumns; i++ ) {
+        int xPosition = startXPosition + i * BoardField::defaultWidthHeight;
+        int yPosition = startYPosition + numberOfRowsColumns * BoardField::defaultWidthHeight;
+        QPoint point = QPoint(xPosition, yPosition);
+        QRectF rect = QRectF(0, 0, BoardField::defaultWidthHeight, 30);
+        drawBoardFrameAtPosition(point, rect, lettersTitles[i]);
+    }
+
+    for (int i = 0; i< numberOfRowsColumns; i++ ) {
+        int yPosition = startXPosition + i * BoardField::defaultWidthHeight;
+        QPoint point = QPoint(70, yPosition);
+        QRectF rect = QRectF(0, 0, 30, BoardField::defaultWidthHeight);
+        drawBoardFrameAtPosition(point, rect, numberTitles[i]);
+    }
+
+    for (int i = 0; i< numberOfRowsColumns; i++ ) {
+        int xPosition = startXPosition + numberOfRowsColumns * BoardField::defaultWidthHeight;
+        int yPosition = startXPosition + i * BoardField::defaultWidthHeight;
+        QPoint point = QPoint(xPosition, yPosition);
+        QRectF rect = QRectF(0, 0, 30, BoardField::defaultWidthHeight);
+        drawBoardFrameAtPosition(point, rect, numberTitles[i]);
+    }
+}
+
+void BoardView::drawBoardFrameAtPosition(QPoint point, QRectF rect, QString title) {
+    BoardFrameField  *frameField = new BoardFrameField(this);
+
+    frameField->setRect(rect);
+    frameField->setPos(point);
+    frameField->setTitle(title);
 }
 
 QPointF BoardView::getCoordinatesForBoardPosition(BoardPosition position) {

@@ -6,12 +6,13 @@ int BoardField::defaultWidthHeight = 60;
 
 extern GameView *game;
 
-BoardField::BoardField(Qt::GlobalColor backgroundColor,
+BoardField::BoardField(QColor backgroundColor,
                        BoardPosition position,
                        QGraphicsItem *parent): QGraphicsRectItem(parent) {
     this->position = position;
 
     Utils::setBackgroundColor(backgroundColor, this);
+    setPen(Qt::NoPen);
     setAcceptHoverEvents(true);
 }
 

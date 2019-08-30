@@ -27,7 +27,7 @@ public:
     PlayerType owner;
     PawnType type;
     QString imagePath;
-    bool didTakeInitialMove;
+    bool didTakeFirstMove;
 };
 
 #endif // PAWNMODEL_H

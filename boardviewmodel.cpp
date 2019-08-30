@@ -34,6 +34,7 @@ void BoardViewModel::setActivePawnForField(PawnField *pawn) {
 }
 
 void BoardViewModel::setNewPositionForActivePawn(BoardPosition position) {
+    activePawn->didTakeFirstMove = true;
     activePawn->position = position;
 }
 
@@ -164,11 +165,7 @@ bool BoardViewModel::validateKingPawnMove(BoardPosition positionToMove) {
         return false;
     }
 
-    int xDiference = positionToMove.x - activePawn->position.x;
-    int yDiference = positionToMove.y - activePawn->position.y;
-    int numbeOfFieldsToCheck = std::max(abs(xDiference), abs(yDiference));
-
-    return (numbeOfFieldsToCheck == 1);
+    return activePawnWantsToMoveByOneField(positionToMove);
 }
 
 bool BoardViewModel::validateQueenPawnMove(BoardPosition positionToMove) {
@@ -237,6 +234,20 @@ bool BoardViewModel::validateKnightPawnMove(BoardPosition positionToMove) {
     return false;
 }
 
+/*
+    Pawns cannot move backwards.
+    Normally a pawn moves by advancing a single square, but the first time a pawn moves, it has the option of advancing two squares
+    Pawns may not use the initial two-square advance to jump over an occupied square, or to capture
+    Any piece immediately in front of a pawn, friend or foe, blocks its advance
+
+    En passant capture. It can occur after a pawn advances two squares using its initial two-step move option,
+    and the square passed over is attacked by an enemy pawn.
+    The enemy pawn is entitled to capture the moved pawn "in passing" – as if it had advanced only one square.
+    The capturing pawn moves to the square over which the moved pawn passed, and the moved pawn is removed from the board.
+    The option to capture the moved pawn en passant must be exercised on the move immediately following the double-step pawn advance,
+    or it is lost for the remainder of the game.
+*/
+
 bool BoardViewModel::validateBasePawnMove(BoardPosition positionToMove) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
@@ -244,20 +255,40 @@ bool BoardViewModel::validateBasePawnMove(BoardPosition positionToMove) {
         return false;
     }
 
-    // pawns cannot move backwards
-    // Normally a pawn moves by advancing a single square, but the first time a pawn moves, it has the option of advancing two squares
-    // Pawns may not use the initial two-square advance to jump over an occupied square, or to capture
-    // Any piece immediately in front of a pawn, friend or foe, blocks its advance
+    int xDiference = positionToMove.x - activePawn->position.x;
+    int yDiference = positionToMove.y - activePawn->position.y;
+    int numbeOfFieldsToMove = std::max(abs(xDiference), abs(yDiference));
 
-    /*
-    En passant capture. It can occur after a pawn advances two squares using its initial two-step move option,
-    and the square passed over is attacked by an enemy pawn.
-    The enemy pawn is entitled to capture the moved pawn "in passing" – as if it had advanced only one square.
-    The capturing pawn moves to the square over which the moved pawn passed, and the moved pawn is removed from the board.
-    The option to capture the moved pawn en passant must be exercised on the move immediately following the double-step pawn advance,
-    or it is lost for the remainder of the game.
-    */
-    return true;
+    bool wantsToMoveByOneField = (numbeOfFieldsToMove == 1);
+
+    if (abs(xDiference) > 2 || abs(yDiference) > 2) {
+        return false;
+    }
+
+    if ( !wantsToMoveByOneField && activePawn->didTakeFirstMove) {
+        return false;
+    }
+
+    bool wantsToMoveInGoodDirection;
+
+    switch (activePawn->owner) {
+    case PlayerType::black:
+        wantsToMoveInGoodDirection = yDiference > 0;
+        break;
+    case PlayerType::white:
+        wantsToMoveInGoodDirection = yDiference < 0;
+        break;
+    }
+
+    if (wantsToMoveByOneField) {
+        if (xDiference == 0) {
+            return (wantsToMoveInGoodDirection && !pawn);
+        } else {
+            return (wantsToMoveInGoodDirection && pawn); // TODO: adjust to En_passant
+        }
+    }
+
+    return (wantsToMoveInGoodDirection && !activePawn->didTakeFirstMove && xDiference == 0);
 }
 
 bool BoardViewModel::validateAnotherPawnIntersection(BoardPosition positionToMove) {
@@ -306,6 +337,14 @@ bool BoardViewModel::validateAnotherPawnIntersection(BoardPosition positionToMov
     return true;
 }
 
-bool BoardViewModel::isFieldOccupiedByEnemy(BoardPosition fieldPosition) {
+bool BoardViewModel::activePawnWantsToMoveByOneField(BoardPosition positionToMove) {
+    int xDiference = positionToMove.x - activePawn->position.x;
+    int yDiference = positionToMove.y - activePawn->position.y;
+    int numbeOfFieldsToMove = std::max(abs(xDiference), abs(yDiference));
+
+    return (numbeOfFieldsToMove == 1);
+}
+
+bool BoardViewModel::isFieldOccupiedByEnemy(BoardPosition boardPosition) {
     return false;
 }

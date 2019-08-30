@@ -48,7 +48,8 @@ private:
     bool validateKnightPawnMove(BoardPosition positionToMove);
     bool validateBasePawnMove(BoardPosition positionToMove);
     bool validateAnotherPawnIntersection(BoardPosition positionToMove);
-    bool isFieldOccupiedByEnemy(BoardPosition fieldPosition);
+    bool activePawnWantsToMoveByOneField(BoardPosition positionToMove);
+    bool isFieldOccupiedByEnemy(BoardPosition boardPosition);
 };
 
 #endif // BOARDVIEWMODEL_H

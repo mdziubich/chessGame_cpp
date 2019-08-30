@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         actionbutton.cpp \
         boardfield.cpp \
+        boardframefield.cpp \
         boardview.cpp \
         boardviewmodel.cpp \
         gameview.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 HEADERS += \
         actionbutton.h \
         boardfield.h \
+        boardframefield.h \
         boardposition.h \
         boardview.h \
         boardviewmodel.h \

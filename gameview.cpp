@@ -2,6 +2,8 @@
 #include "boardview.h"
 #include "actionbutton.h"
 #include <QGraphicsTextItem>
+#include <QColor>
+#include <QBrush>
 #include <utils.h>
 
 GameView::GameView() {
@@ -19,6 +21,12 @@ GameView::GameView() {
     scene->setSceneRect(0, 0, viewWidth, viewHeight);
     setScene(scene);
 
+    QBrush brush;
+    brush.setStyle((Qt::SolidPattern));
+    QColor color = QColor(44, 41, 51);
+    brush.setColor(color);
+    scene->setBackgroundBrush(brush);
+
     gameStarted = false;
 }
 
@@ -26,8 +34,11 @@ GameView::GameView() {
 void GameView::displayMainMenu() {
     // create title label
     QGraphicsTextItem *title = new QGraphicsTextItem(QString("Chess Game"));
+    QColor color = QColor(255, 255, 255);
     QFont titleFont("avenir", 50);
+    title->setDefaultTextColor(color);
     title->setFont(titleFont);
+
     double titleXPosition = this->width()/2 - title->boundingRect().width()/2;
     double titleYPosition = 150;
     title->setPos(titleXPosition, titleYPosition);
@@ -75,10 +86,10 @@ void GameView::drawBoard() {
 
 void GameView::drawSettingsPanel() {
     QGraphicsTextItem *settingsTitle = new QGraphicsTextItem("Settings");
-    settingsTitle->setPos(600, 100);
+    settingsTitle->setPos(700, 100);
     scene->addItem(settingsTitle);
 
-    QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(600, 100, 300, 480);
+    QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(700, 100, 300, 480);
     Utils::setBackgroundColor(Qt::blue, settingsPanel);
     settingsPanel->setOpacity(0.5);
     scene->addItem(settingsPanel);

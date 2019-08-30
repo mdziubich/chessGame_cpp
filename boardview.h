@@ -30,6 +30,8 @@ private:
 
     void placeBoardFields();
     void createFieldsColumn(int xPosition, int columnNumber);
+    void drawBoardFrame();
+    void drawBoardFrameAtPosition(QPoint point, QRectF rect, QString title);
     QPointF getCoordinatesForBoardPosition(BoardPosition position);
 };
 

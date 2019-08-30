@@ -6,8 +6,9 @@
 #include <boardposition.h>
 
 class BoardField: public QGraphicsRectItem {
+
 public:
-    BoardField(Qt::GlobalColor backgroundColor,
+    BoardField(QColor backgroundColor,
                BoardPosition position,
                QGraphicsItem *parent = nullptr);
 
