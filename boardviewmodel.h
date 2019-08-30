@@ -17,6 +17,7 @@ public:
     QList<PawnModel*> getBlackPawns();
     QList<PawnModel*> getWhitePawns();
     PawnModel* getActivePawn();
+    PlayerType getWhosTurn();
     void setActivePawnForField(PawnField *pawn);
     void setNewPositionForActivePawn(BoardPosition position);
     void discardActivePawn();

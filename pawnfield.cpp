@@ -2,8 +2,7 @@
 #include "boardfield.h"
 #include "boardposition.h"
 #include "gameview.h"
-#include <QLabel>
-#include <QGraphicsProxyWidget>
+#include "utils.h"
 
 extern GameView *game;
 
@@ -13,7 +12,7 @@ PawnField::PawnField(BoardPosition position,
     this->position = position;
 
     setPen(Qt::NoPen);
-    setInitialImage(imagePath);
+    Utils::setImage(imagePath, this);
 }
 
 void PawnField::setPosition(BoardPosition position) {
@@ -22,14 +21,4 @@ void PawnField::setPosition(BoardPosition position) {
 
 BoardPosition PawnField::getPosition() {
     return position;
-}
-
-void PawnField::setInitialImage(QString imagePath) {
-    QPixmap image(imagePath);
-    QLabel *imageLabel = new QLabel();
-    QGraphicsProxyWidget *pMyProxy = new QGraphicsProxyWidget(this);
-
-    imageLabel->setPixmap(image);
-    imageLabel->setAttribute(Qt::WA_TranslucentBackground);
-    pMyProxy->setWidget(imageLabel);
 }

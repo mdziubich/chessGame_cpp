@@ -1,0 +1,19 @@
+#ifndef PLAYERVIEW_H
+#define PLAYERVIEW_H
+
+#include <QGraphicsItem>
+#include <QGraphicsRectItem>
+#include "pawnmodel.h"
+
+class PlayerView: public QGraphicsRectItem  {
+
+public:
+    PlayerView(QGraphicsItem *parent = nullptr);
+
+    static int defaultWidthHeight;
+
+    void setPlayer(PlayerType owner);
+    void setActive(bool active);
+};
+
+#endif // PLAYERVIEW_H

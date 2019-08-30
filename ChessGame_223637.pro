@@ -30,11 +30,13 @@ SOURCES += \
         boardframefield.cpp \
         boardview.cpp \
         boardviewmodel.cpp \
+        constants.cpp \
         gameview.cpp \
         main.cpp \
         pawnfield.cpp \
         pawnmodel.cpp \
         pawnviemodel.cpp \
+        playerview.cpp \
         utils.cpp
 
 HEADERS += \
@@ -44,11 +46,13 @@ HEADERS += \
         boardposition.h \
         boardview.h \
         boardviewmodel.h \
+        constants.h \
         gameview.h \
         helpers.h \
         pawnfield.h \
         pawnmodel.h \
         pawnviewmodel.h \
+        playerview.h \
         utils.h
 
 FORMS +=

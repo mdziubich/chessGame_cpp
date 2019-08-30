@@ -11,7 +11,7 @@ extern GameView *game;
 
 int BoardView::numberOfRowsColumns = 8;
 int BoardView::startXPosition = 100;
-int BoardView::startYPosition = 100;
+int BoardView::startYPosition = 150;
 
 BoardView::BoardView() {
     int size = numberOfRowsColumns * BoardField::defaultWidthHeight;
@@ -134,7 +134,7 @@ void BoardView::drawBoardFrame() {
 
     for (int i = 0; i< numberOfRowsColumns; i++ ) {
         int xPosition = startXPosition + i * BoardField::defaultWidthHeight;
-        QPoint point = QPoint(xPosition, 70);
+        QPoint point = QPoint(xPosition, startYPosition - 30);
         QRectF rect = QRectF(0, 0, BoardField::defaultWidthHeight, 30);
         drawBoardFrameAtPosition(point, rect, lettersTitles[i]);
     }
@@ -148,7 +148,7 @@ void BoardView::drawBoardFrame() {
     }
 
     for (int i = 0; i< numberOfRowsColumns; i++ ) {
-        int yPosition = startXPosition + i * BoardField::defaultWidthHeight;
+        int yPosition = startYPosition + i * BoardField::defaultWidthHeight;
         QPoint point = QPoint(70, yPosition);
         QRectF rect = QRectF(0, 0, 30, BoardField::defaultWidthHeight);
         drawBoardFrameAtPosition(point, rect, numberTitles[i]);
@@ -156,7 +156,7 @@ void BoardView::drawBoardFrame() {
 
     for (int i = 0; i< numberOfRowsColumns; i++ ) {
         int xPosition = startXPosition + numberOfRowsColumns * BoardField::defaultWidthHeight;
-        int yPosition = startXPosition + i * BoardField::defaultWidthHeight;
+        int yPosition = startYPosition + i * BoardField::defaultWidthHeight;
         QPoint point = QPoint(xPosition, yPosition);
         QRectF rect = QRectF(0, 0, 30, BoardField::defaultWidthHeight);
         drawBoardFrameAtPosition(point, rect, numberTitles[i]);

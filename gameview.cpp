@@ -1,16 +1,15 @@
 #include "gameview.h"
-#include "boardview.h"
-#include "actionbutton.h"
 #include <QGraphicsTextItem>
 #include <QColor>
 #include <QBrush>
-#include <utils.h>
+#include "actionbutton.h"
+#include "utils.h"
 
 GameView::GameView() {
 
     boardViewModel = BoardViewModel();
 
-    int viewWidth = 1024;
+    int viewWidth = 1200;
     int viewHeight= 768;
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -85,18 +84,43 @@ void GameView::drawBoard() {
 }
 
 void GameView::drawSettingsPanel() {
-    QGraphicsTextItem *settingsTitle = new QGraphicsTextItem("Settings");
-    settingsTitle->setPos(700, 100);
-    scene->addItem(settingsTitle);
+//    QGraphicsTextItem *settingsTitle = new QGraphicsTextItem("Settings");
+//    settingsTitle->setPos(700, 100);
+//    scene->addItem(settingsTitle);
 
-    QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(700, 100, 300, 480);
-    Utils::setBackgroundColor(Qt::blue, settingsPanel);
-    settingsPanel->setOpacity(0.5);
-    scene->addItem(settingsPanel);
+//    QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(700, 100, 300, 480);
+//    Utils::setBackgroundColor(Qt::blue, settingsPanel);
+//    settingsPanel->setOpacity(0.5);
+//    scene->addItem(settingsPanel);
 }
 
 void GameView::drawUserPanel() {
+    blackPlayerView = drawViewForUser(PlayerType::black);
+    whitePlayerView = drawViewForUser(PlayerType::white);
 
+    blackPlayerView->setActive(true);
+}
+
+PlayerView* GameView::drawViewForUser(PlayerType player) {
+    PlayerView *playerView = new PlayerView();
+
+    int xPosition = 80;
+    int yPosition = 80;
+
+    switch (player) {
+    case PlayerType::black:
+        xPosition = 680;
+        break;
+    case PlayerType::white:
+        xPosition = 680 + PlayerView::defaultWidthHeight + 20;
+        break;
+    }
+
+    scene->addItem(playerView);
+    playerView->setRect(xPosition, yPosition, PlayerView::defaultWidthHeight, PlayerView::defaultWidthHeight);
+    playerView->setPlayer(player);
+
+    return playerView;
 }
 
 void GameView::mousePressEvent(QMouseEvent *event) {
@@ -166,6 +190,8 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
 
     // change round owner to opposite player
     boardViewModel.switchRound();
+    blackPlayerView->setActive(boardViewModel.getWhosTurn() == PlayerType::black);
+    whitePlayerView->setActive(boardViewModel.getWhosTurn() == PlayerType::white);
 }
 
 //update pawn field position and pawn model position

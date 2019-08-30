@@ -8,6 +8,7 @@
 #include "boardview.h"
 #include "boardviewmodel.h"
 #include "pawnfield.h"
+#include "playerview.h"
 
 class GameView : public QGraphicsView {
     Q_OBJECT
@@ -27,10 +28,13 @@ private:
     BoardViewModel boardViewModel;
     bool gameStarted;
     BoardView *board;
+    PlayerView *blackPlayerView;
+    PlayerView *whitePlayerView;
 
     void drawBoard();
     void drawSettingsPanel();
     void drawUserPanel();
+    PlayerView* drawViewForUser(PlayerType player);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void selectPawn(PawnField *pawn);

@@ -24,6 +24,10 @@ PawnModel* BoardViewModel::getActivePawn() {
     return activePawn;
 }
 
+PlayerType BoardViewModel::getWhosTurn() {
+    return whosTurn;
+}
+
 void BoardViewModel::setActivePawnForField(PawnField *pawn) {
     PawnModel* pawnModel = getPawnOnBoardPosition(pawn->getPosition());
 
