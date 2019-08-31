@@ -173,7 +173,10 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
 
     // Players cannot make any move that places their own king in check.
 
-    // check if field was taken by opposite player
+    // check if field was taken by opposite player and remove it from the board
+    if (boardViewModel.didRemoveEnemyOnBoardPosition(boardPosition)) {
+        board->removePawnAtBoardPosition(boardPosition);
+    }
 
     // check for rook's castling
 

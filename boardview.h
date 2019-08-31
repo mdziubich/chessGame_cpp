@@ -23,6 +23,7 @@ public:
     PawnField* getPawnAtMousePosition(QPoint point);
     void moveActivePawnToMousePosition(QPoint point, PawnModel *pawn);
     void placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition);
+    void removePawnAtBoardPosition(BoardPosition boardPosition);
 
 private:
     QList<BoardField*> fields;

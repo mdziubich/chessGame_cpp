@@ -64,6 +64,16 @@ void BoardView::placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition bo
     }
 }
 
+void BoardView::removePawnAtBoardPosition(BoardPosition boardPosition) {
+    PawnField *pawnField = getPawnAtBoardPosition(boardPosition);
+
+    game->scene->removeItem(pawnField);
+
+    int index = pawns.indexOf(pawnField);
+    pawns.removeAt(index);
+    delete pawnField;
+}
+
 PawnField* BoardView::getPawnAtMousePosition(QPoint point) {
     for (int i = 0; i < pawns.length(); i++) {
         PawnField *pawn = pawns[i];

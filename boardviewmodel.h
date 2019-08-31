@@ -21,14 +21,14 @@ public:
     void setActivePawnForField(PawnField *pawn);
     void setNewPositionForActivePawn(BoardPosition position);
     void discardActivePawn();
-
     BoardPosition getBoardPositionForMousePosition(QPoint position);
     bool validatePawnPalcementForMousePosition(QPoint position);
     bool validatePawnMove(BoardPosition positionToMove);
+    bool didRemoveEnemyOnBoardPosition(BoardPosition boardPosition);
     void switchRound();
+
     bool isCastlingAvailable();
     bool isPawnPromotionAvailable();
-
     bool shouldReplaceActivePawnWithQueen();
 
 private:
@@ -41,7 +41,6 @@ private:
     void initializePawns();
     void initializePawnsForRow(int rowNumber, PlayerType owner);
     PawnModel* getPawnOnBoardPosition(BoardPosition baordPosition);
-
     bool validateKingPawnMove(BoardPosition positionToMove);
     bool validateQueenPawnMove(BoardPosition positionToMove);
     bool validateRookPawnMove(BoardPosition positionToMove);
@@ -50,7 +49,6 @@ private:
     bool validateBasePawnMove(BoardPosition positionToMove);
     bool validateAnotherPawnIntersection(BoardPosition positionToMove);
     bool activePawnWantsToMoveByOneField(BoardPosition positionToMove);
-    bool isFieldOccupiedByEnemy(BoardPosition boardPosition);
 };
 
 #endif // BOARDVIEWMODEL_H

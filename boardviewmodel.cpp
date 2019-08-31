@@ -93,6 +93,35 @@ bool BoardViewModel::validatePawnMove(BoardPosition positionToMove) {
     }
 }
 
+bool BoardViewModel::didRemoveEnemyOnBoardPosition(BoardPosition boardPosition) {
+    PawnModel *pawn = getPawnOnBoardPosition(boardPosition);
+
+    if (pawn && pawn->owner == whosTurn) {
+        return false;
+    }
+
+    if (pawn) {
+        switch (whosTurn) {
+        case PlayerType::black: {
+            int index = whitePawns.indexOf(pawn);
+            whitePawns.removeAt(index);
+        }
+            break;
+        case PlayerType::white: {
+            int index = blackPawns.indexOf(pawn);
+            blackPawns.removeAt(index);
+        }
+            break;
+        }
+
+        delete pawn;
+
+        return true;
+    }
+
+    return false;
+}
+
 void BoardViewModel::switchRound() {
     switch (whosTurn) {
     case PlayerType::black:
@@ -347,8 +376,4 @@ bool BoardViewModel::activePawnWantsToMoveByOneField(BoardPosition positionToMov
     int numbeOfFieldsToMove = std::max(abs(xDiference), abs(yDiference));
 
     return (numbeOfFieldsToMove == 1);
-}
-
-bool BoardViewModel::isFieldOccupiedByEnemy(BoardPosition boardPosition) {
-    return false;
 }
