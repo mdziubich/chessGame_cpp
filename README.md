@@ -17,3 +17,6 @@ https://en.wikipedia.org/wiki/Promotion_(chess)
 https://en.wikipedia.org/wiki/Opposition_(chess)
 https://en.wikipedia.org/wiki/Check_(chess)
 https://en.wikipedia.org/wiki/Checkmate
+
+Images source:
+https://www.flaticon.com

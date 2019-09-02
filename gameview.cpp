@@ -3,15 +3,14 @@
 #include <QColor>
 #include <QBrush>
 #include "actionbutton.h"
+#include "congratulationsview.h"
 #include "constants.h"
 #include "utils.h"
 
+int viewWidth = 1200;
+int viewHeight= 768;
+
 GameView::GameView() {
-
-    boardViewModel = BoardViewModel();
-
-    int viewWidth = 1200;
-    int viewHeight= 768;
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -41,7 +40,7 @@ void GameView::displayMainMenu() {
     scene->addItem(title);
 
     // create start button
-    ActionButton *startButton = new ActionButton(QString("Play"));
+    ActionButton *startButton = new ActionButton("Play");
     double buttonXPosition = this->width()/2 - startButton->boundingRect().width()/2;
     double buttonYPosition = 275;
     startButton->setPos(buttonXPosition, buttonYPosition);
@@ -50,7 +49,7 @@ void GameView::displayMainMenu() {
     scene->addItem(startButton);
 
     // create quit button
-    ActionButton *quitButton = new ActionButton(QString("Quit"));
+    ActionButton *quitButton = new ActionButton("Quit");
     double quitXPosition = this->width()/2 - quitButton->boundingRect().width()/2;
     double quitYPosition = 350;
     quitButton->setPos(quitXPosition, quitYPosition);
@@ -63,6 +62,8 @@ void GameView::startGame() {
     // clear the screen
     scene->clear();
 
+    boardViewModel = BoardViewModel();
+
     drawBoard();
     drawSettingsPanel();
     drawUserPanel();
@@ -71,6 +72,12 @@ void GameView::startGame() {
 
 void GameView::quitGame() {
     gameStarted = false;
+}
+
+void GameView::resetGame() {
+    gameStarted = false;
+    scene->clear();
+    displayMainMenu();
 }
 
 void GameView::drawBoard() {
@@ -121,11 +128,14 @@ PlayerView* GameView::drawViewForUser(PlayerType player) {
 }
 
 void GameView::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::RightButton) {
+    if (!gameStarted) {
+        QGraphicsView::mousePressEvent(event);
+        return;
+    } else if (event->button() == Qt::RightButton) {
         releaseActivePawn();
     } else if (boardViewModel.getActivePawn()) {
         handleSelectingPointForActivePawnByMouse(event->pos());
-    } else if (gameStarted) {
+    } else {
         PawnField *pawn = board->getPawnAtMousePosition(event->pos());
         selectPawn(pawn);
     }
@@ -135,7 +145,7 @@ void GameView::mousePressEvent(QMouseEvent *event) {
 
 void GameView::mouseMoveEvent(QMouseEvent *event) {
     // if there is a pawn selected, then make it follow the mouse
-    if (boardViewModel.getActivePawn()) {
+    if (gameStarted && boardViewModel.getActivePawn()) {
         board->moveActivePawnToMousePosition(event->pos(), boardViewModel.getActivePawn());
     }
 
@@ -197,7 +207,11 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
         break;
     }
 
-    // check is game is over
+    // check if game is over
+    if (boardViewModel.getWinner()) {
+        showCongratulationsScreen(*boardViewModel.getWinner());
+        return;
+    }
 
     // change round owner to opposite player
     boardViewModel.discardActivePawn();
@@ -221,4 +235,14 @@ void GameView::releaseActivePawn() {
     PawnModel *activePawn = boardViewModel.getActivePawn();
     board->placeActivePawnAtBoardPosition(activePawn, activePawn->position);
     boardViewModel.discardActivePawn();
+}
+
+void GameView::showCongratulationsScreen(PlayerType winner) {
+    gameStarted = false;
+
+    scene->clear();
+
+    CongratulationsView *congratulationsView = new CongratulationsView(winner);
+    congratulationsView->setRect(0, 0, viewWidth, viewHeight);
+    scene->addItem(congratulationsView);
 }

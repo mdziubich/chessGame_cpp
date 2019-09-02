@@ -18,6 +18,7 @@ public:
     QList<PawnModel*> getWhitePawns();
     PawnModel* getActivePawn();
     PlayerType getWhosTurn();
+    PlayerType* getWinner();
     void setActivePawnForField(PawnField *pawn);
     void setNewPositionForActivePawn(BoardPosition position);
     void discardActivePawn();
@@ -38,6 +39,7 @@ private:
     QList<PawnModel*> blackPawns;
     QList<PawnModel*> whitePawns;
     PawnViewModel pawnViewModel;
+    PlayerType *winner;
 
     void initializePawns();
     void initializePawnsForRow(int rowNumber, PlayerType owner);

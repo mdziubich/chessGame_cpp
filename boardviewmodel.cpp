@@ -8,6 +8,7 @@ BoardViewModel::BoardViewModel() {
     whosTurn = PlayerType::black;
     isEnPassantAvailable = false;
     pawnViewModel = PawnViewModel();
+    winner = nullptr;
 
     initializePawns();
 }
@@ -26,6 +27,10 @@ PawnModel* BoardViewModel::getActivePawn() {
 
 PlayerType BoardViewModel::getWhosTurn() {
     return whosTurn;
+}
+
+PlayerType* BoardViewModel::getWinner() {
+    return winner;
 }
 
 void BoardViewModel::setActivePawnForField(PawnField *pawn) {
@@ -121,6 +126,10 @@ bool BoardViewModel::didRemoveEnemyOnBoardPosition(BoardPosition boardPosition) 
             blackPawns.removeAt(index);
         }
             break;
+        }
+
+        if (pawn->type == PawnType::king) {
+            winner = &whosTurn;
         }
 
         delete pawn;

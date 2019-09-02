@@ -30,6 +30,7 @@ SOURCES += \
         boardframefield.cpp \
         boardview.cpp \
         boardviewmodel.cpp \
+        congratulationsview.cpp \
         constants.cpp \
         gameview.cpp \
         main.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
         boardposition.h \
         boardview.h \
         boardviewmodel.h \
+        congratulationsview.h \
         constants.h \
         gameview.h \
         helpers.h \

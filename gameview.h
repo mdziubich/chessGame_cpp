@@ -23,6 +23,7 @@ public:
 public slots:
     void startGame();
     void quitGame();
+    void resetGame();
 
 private:
     BoardViewModel boardViewModel;
@@ -41,6 +42,7 @@ private:
     void handleSelectingPointForActivePawnByMouse(QPoint point);
     void moveActivePawnToSelectedPoint(QPoint point);
     void releaseActivePawn();
+    void showCongratulationsScreen(PlayerType winner);
 };
 
 #endif // GAME_H
