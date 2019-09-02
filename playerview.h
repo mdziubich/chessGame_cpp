@@ -14,6 +14,10 @@ public:
 
     void setPlayer(PlayerType owner);
     void setActive(bool active);
+    void setIsInCheck(bool isCheck);
+
+private:
+    QGraphicsTextItem *checkTextItem;
 };
 
 #endif // PLAYERVIEW_H

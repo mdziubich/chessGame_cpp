@@ -2,6 +2,7 @@
 #include <QLabel>
 #include "boardfield.h"
 #include "boardposition.h"
+#include "constants.h"
 #include "boardframefield.h"
 #include "gameview.h"
 #include "pawnfield.h"
@@ -26,6 +27,7 @@ QList<BoardField*> BoardView::getFields() {
 void BoardView::draw() {
     placeBoardFields();
     drawBoardFrame();
+    drawCheckWarningTextItems();
 }
 
 void BoardView::initializePawnFields(QList<PawnModel*> pawns) {
@@ -72,6 +74,12 @@ void BoardView::removePawnAtBoardPosition(BoardPosition boardPosition) {
     int index = pawns.indexOf(pawnField);
     pawns.removeAt(index);
     delete pawnField;
+}
+
+void BoardView::setPawnMoveCheckWarning(bool visible) {
+    int opacity = visible ? 1 : 0;
+    checkWarningTitleTextItem->setOpacity(opacity);
+    checkWarningDescriptionTextItem->setOpacity(opacity);
 }
 
 PawnField* BoardView::getPawnAtMousePosition(QPoint point) {
@@ -179,6 +187,20 @@ void BoardView::drawBoardFrameAtPosition(QPoint point, QRectF rect, QString titl
     frameField->setRect(rect);
     frameField->setPos(point);
     frameField->setTitle(title);
+}
+
+void BoardView::drawCheckWarningTextItems() {
+    checkWarningTitleTextItem = Utils::createTextItem("This move is not possible!", 18, Constants::defaultTextColor, this);
+    double titleXPosition = startXPosition + (BoardField::defaultWidthHeight*numberOfRowsColumns)/2 - checkWarningTitleTextItem->boundingRect().width()/2;
+    double titleYPosition = 40;
+    checkWarningTitleTextItem->setPos(titleXPosition, titleYPosition);
+    checkWarningTitleTextItem->setOpacity(0);
+
+    checkWarningDescriptionTextItem = Utils::createTextItem("You cannot make any move that places your own king in check", 18, Constants::defaultTextColor, this);
+    double descriptionXPosition = startXPosition + (BoardField::defaultWidthHeight*numberOfRowsColumns)/2 - checkWarningDescriptionTextItem->boundingRect().width()/2;
+    double descriptionYPosition = 60;
+    checkWarningDescriptionTextItem->setPos(descriptionXPosition, descriptionYPosition);
+    checkWarningDescriptionTextItem->setOpacity(0);
 }
 
 QPointF BoardView::getCoordinatesForBoardPosition(BoardPosition position) {

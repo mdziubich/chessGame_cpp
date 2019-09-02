@@ -2,7 +2,8 @@
 #include <QBrush>
 #include <QGraphicsRectItem>
 #include <QFont>
-#include <utils.h>
+#include "constants.h"
+#include "utils.h"
 
 ActionButton::ActionButton(QString title) {
     setRect(0, 0, 200, 50);
@@ -10,9 +11,8 @@ ActionButton::ActionButton(QString title) {
     QColor backgroundColor = QColor(157, 128, 101);
     Utils::setBackgroundColor(backgroundColor, this);
 
-    QGraphicsTextItem *text = new QGraphicsTextItem(title, this);
-    QFont textFont("avenir", 20);
-    text->setFont(textFont);
+    QColor textColor = QColor(44, 41, 51);
+    QGraphicsTextItem *text = Utils::createTextItem(title, 20, textColor, this);
     double xPosition = rect().width()/2 - text->boundingRect().width()/2;
     double yPosition = rect().height()/2 - text->boundingRect().height()/2;
 

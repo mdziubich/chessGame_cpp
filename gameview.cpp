@@ -3,6 +3,7 @@
 #include <QColor>
 #include <QBrush>
 #include "actionbutton.h"
+#include "constants.h"
 #include "utils.h"
 
 GameView::GameView() {
@@ -32,11 +33,7 @@ GameView::GameView() {
 
 void GameView::displayMainMenu() {
     // create title label
-    QGraphicsTextItem *title = new QGraphicsTextItem(QString("Chess Game"));
-    QColor color = QColor(255, 255, 255);
-    QFont titleFont("avenir", 50);
-    title->setDefaultTextColor(color);
-    title->setFont(titleFont);
+    QGraphicsTextItem *title = Utils::createTextItem("Chess Game", 50, Qt::white);
 
     double titleXPosition = this->width()/2 - title->boundingRect().width()/2;
     double titleYPosition = 150;
@@ -171,27 +168,39 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
         return;
     }
 
-    // Players cannot make any move that places their own king in check.
+    // Players cannot make any move that places their own king in check
+    bool isKingInCheck = boardViewModel.isKingInCheck(boardViewModel.getActivePawn()->owner, true, boardPosition);
+    board->setPawnMoveCheckWarning(isKingInCheck);
+    if (isKingInCheck) {
+        return;
+    }
 
     // check if field was taken by opposite player and remove it from the board
     if (boardViewModel.didRemoveEnemyOnBoardPosition(boardPosition)) {
         board->removePawnAtBoardPosition(boardPosition);
     }
 
+    // move active pawn to new position
+    moveActivePawnToSelectedPoint(point);
+
     // check for rook's castling
 
     // check if pawn can be promoted
 
-    // remove opposite player pawn
-
-    // check for king's check
+    // check for opposite player king's check
+    switch (boardViewModel.getActivePawn()->owner) {
+    case PlayerType::black:
+        whitePlayerView->setIsInCheck(boardViewModel.isKingInCheck(PlayerType::white, false, boardPosition));
+        break;
+    case PlayerType::white:
+        blackPlayerView->setIsInCheck(boardViewModel.isKingInCheck(PlayerType::black, false, boardPosition));
+        break;
+    }
 
     // check is game is over
 
-    // move active pawn to new position
-    moveActivePawnToSelectedPoint(point);
-
     // change round owner to opposite player
+    boardViewModel.discardActivePawn();
     boardViewModel.switchRound();
     blackPlayerView->setActive(boardViewModel.getWhosTurn() == PlayerType::black);
     whitePlayerView->setActive(boardViewModel.getWhosTurn() == PlayerType::white);
@@ -202,7 +211,6 @@ void GameView::moveActivePawnToSelectedPoint(QPoint point) {
     BoardPosition boardPosition = boardViewModel.getBoardPositionForMousePosition(point);
     board->placeActivePawnAtBoardPosition(boardViewModel.getActivePawn(), boardPosition);
     boardViewModel.setNewPositionForActivePawn(boardPosition);
-    boardViewModel.discardActivePawn();
 }
 
 void GameView::releaseActivePawn() {

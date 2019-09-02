@@ -23,8 +23,9 @@ public:
     void discardActivePawn();
     BoardPosition getBoardPositionForMousePosition(QPoint position);
     bool validatePawnPalcementForMousePosition(QPoint position);
-    bool validatePawnMove(BoardPosition positionToMove);
+    bool validatePawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate = nullptr, BoardPosition *requestedActivePawnPosition = nullptr);
     bool didRemoveEnemyOnBoardPosition(BoardPosition boardPosition);
+    bool isKingInCheck(PlayerType owner, bool isCheckingActivePlayer, BoardPosition positionToMoveActivePlayer);
     void switchRound();
 
     bool isCastlingAvailable();
@@ -41,14 +42,15 @@ private:
     void initializePawns();
     void initializePawnsForRow(int rowNumber, PlayerType owner);
     PawnModel* getPawnOnBoardPosition(BoardPosition baordPosition);
-    bool validateKingPawnMove(BoardPosition positionToMove);
-    bool validateQueenPawnMove(BoardPosition positionToMove);
-    bool validateRookPawnMove(BoardPosition positionToMove);
-    bool validateBishopPawnMove(BoardPosition positionToMove);
-    bool validateKnightPawnMove(BoardPosition positionToMove);
-    bool validateBasePawnMove(BoardPosition positionToMove);
-    bool validateAnotherPawnIntersection(BoardPosition positionToMove);
-    bool activePawnWantsToMoveByOneField(BoardPosition positionToMove);
+    bool validateKingPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate);
+    bool validateQueenPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool validateRookPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool validateBishopPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool validateKnightPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate);
+    bool validateBasePawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool validateAnotherPawnIntersection(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool pawnWantsToMoveByOneField(BoardPosition positionToMove, PawnModel *pawnToValidate);
+    bool validateKingsCheckForPawns(QList<PawnModel*> pawns, bool isCheckingActivePlayer, PawnModel *king, BoardPosition positionToMoveActivePlayer);
 };
 
 #endif // BOARDVIEWMODEL_H

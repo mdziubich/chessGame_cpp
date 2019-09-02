@@ -24,15 +24,19 @@ public:
     void moveActivePawnToMousePosition(QPoint point, PawnModel *pawn);
     void placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition);
     void removePawnAtBoardPosition(BoardPosition boardPosition);
+    void setPawnMoveCheckWarning(bool visible);
 
 private:
     QList<BoardField*> fields;
     QList<PawnField*> pawns;
+    QGraphicsTextItem *checkWarningTitleTextItem;
+    QGraphicsTextItem *checkWarningDescriptionTextItem;
 
     void placeBoardFields();
     void createFieldsColumn(int xPosition, int columnNumber);
     void drawBoardFrame();
     void drawBoardFrameAtPosition(QPoint point, QRectF rect, QString title);
+    void drawCheckWarningTextItems();
     QPointF getCoordinatesForBoardPosition(BoardPosition position);
 };
 

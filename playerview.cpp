@@ -30,11 +30,7 @@ void PlayerView::setPlayer(PlayerType owner) {
     }
 
     // set title
-    QGraphicsTextItem *titleItem = new QGraphicsTextItem(title, this);
-    QColor textColor = QColor(157, 128, 101);
-    QFont titleFont("avenir", 18);
-    titleItem->setDefaultTextColor(textColor);
-    titleItem->setFont(titleFont);
+    QGraphicsTextItem *titleItem = Utils::createTextItem(title, 18, Constants::defaultTextColor, this);
 
     double titleXPosition = this->boundingRect().x() + this->boundingRect().width()/2 - titleItem->boundingRect().width()/2;
     double titleYPosition = this->boundingRect().y() + defaultWidthHeight - titleItem->boundingRect().height()/2 - Constants::defaultMargin;
@@ -49,6 +45,13 @@ void PlayerView::setPlayer(PlayerType owner) {
     pawn->setRect(0, 0, BoardField::defaultWidthHeight, BoardField::defaultWidthHeight);
     pawn->setPos(pawnXPosition, pawnYPosition);
 
+    // set check text item
+    checkTextItem = Utils::createTextItem("CHECK", 18, Constants::defaultTextColor, this);
+
+    double checkXPosition = this->boundingRect().x() + this->boundingRect().width()/2 - checkTextItem->boundingRect().width()/2;
+    double checkYPosition = this->boundingRect().y() + defaultWidthHeight - checkTextItem->boundingRect().height()/2 - Constants::defaultMargin*2;
+    checkTextItem->setPos(checkXPosition, checkYPosition);
+    checkTextItem->setOpacity(0);
 }
 
 void PlayerView::setActive(bool active) {
@@ -62,4 +65,9 @@ void PlayerView::setActive(bool active) {
 
     QPen pen(borderColor);
     setPen(pen);
+}
+
+void PlayerView::setIsInCheck(bool isCheck) {
+    int opacity = isCheck ? 1 : 0;
+    checkTextItem->setOpacity(opacity);
 }

@@ -1,4 +1,5 @@
 #include "boardframefield.h"
+#include "constants.h"
 #include "utils.h"
 #include "gameview.h"
 #include <QFont>
@@ -12,11 +13,7 @@ BoardFrameField::BoardFrameField(QGraphicsItem *parent): QGraphicsRectItem(paren
 }
 
 void BoardFrameField::setTitle(QString title) {
-    QGraphicsTextItem *titleItem = new QGraphicsTextItem(title);
-    QColor textColor = QColor(157, 128, 101);
-    QFont titleFont("avenir", 16);
-    titleItem->setDefaultTextColor(textColor);
-    titleItem->setFont(titleFont);
+    QGraphicsTextItem *titleItem = Utils::createTextItem(title, 16, Constants::defaultTextColor);
 
     double titleXPosition = this->pos().x() + this->boundingRect().width()/2 - titleItem->boundingRect().width()/2;
     double titleYPosition = this->pos().y() + this->boundingRect().height()/2 - titleItem->boundingRect().height()/2;;
