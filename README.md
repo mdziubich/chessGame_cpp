@@ -2,6 +2,8 @@
 
 Chess game written in C++ using QT Creator with Qt5 target
 
+![](/Images/mainViewScreenshot.png)
+
 Rules sources:
 
 https://en.wikipedia.org/wiki/King_(chess)
@@ -19,4 +21,5 @@ https://en.wikipedia.org/wiki/Check_(chess)
 https://en.wikipedia.org/wiki/Checkmate
 
 Images source:
+
 https://www.flaticon.com

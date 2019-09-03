@@ -192,13 +192,13 @@ void BoardView::drawBoardFrameAtPosition(QPoint point, QRectF rect, QString titl
 void BoardView::drawCheckWarningTextItems() {
     checkWarningTitleTextItem = Utils::createTextItem("This move is not possible!", 18, Constants::defaultTextColor, this);
     double titleXPosition = startXPosition + (BoardField::defaultWidthHeight*numberOfRowsColumns)/2 - checkWarningTitleTextItem->boundingRect().width()/2;
-    double titleYPosition = 40;
+    double titleYPosition = startYPosition + (BoardField::defaultWidthHeight*numberOfRowsColumns) + 40;
     checkWarningTitleTextItem->setPos(titleXPosition, titleYPosition);
     checkWarningTitleTextItem->setOpacity(0);
 
     checkWarningDescriptionTextItem = Utils::createTextItem("You cannot make any move that places your own king in check", 18, Constants::defaultTextColor, this);
     double descriptionXPosition = startXPosition + (BoardField::defaultWidthHeight*numberOfRowsColumns)/2 - checkWarningDescriptionTextItem->boundingRect().width()/2;
-    double descriptionYPosition = 60;
+    double descriptionYPosition = startYPosition + (BoardField::defaultWidthHeight*numberOfRowsColumns) + 60;
     checkWarningDescriptionTextItem->setPos(descriptionXPosition, descriptionYPosition);
     checkWarningDescriptionTextItem->setOpacity(0);
 }
