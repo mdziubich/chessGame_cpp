@@ -421,7 +421,10 @@ bool BoardViewModel::validateBasePawnMove(BoardPosition positionToMove,
         }
     }
 
-    return (wantsToMoveInGoodDirection && !pawnToValidate->didTakeFirstMove && xDiference == 0);
+    return (wantsToMoveInGoodDirection &&
+            !pawnToValidate->didTakeFirstMove &&
+            xDiference == 0 &&
+            validateAnotherPawnIntersection(positionToMove, pawnToValidate, requestedActivePawnPosition));
 }
 
 bool BoardViewModel::validateAnotherPawnIntersection(BoardPosition positionToMove,
