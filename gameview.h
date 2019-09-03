@@ -36,6 +36,7 @@ private:
     void drawSettingsPanel();
     void drawUserPanel();
     PlayerView* drawViewForUser(PlayerType player);
+    void drawTitle(double yPosition, int fontSize);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void selectPawn(PawnField *pawn);

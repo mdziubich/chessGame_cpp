@@ -32,12 +32,8 @@ GameView::GameView() {
 
 void GameView::displayMainMenu() {
     // create title label
-    QGraphicsTextItem *title = Utils::createTextItem("Chess Game", 50, Qt::white);
-
-    double titleXPosition = this->width()/2 - title->boundingRect().width()/2;
     double titleYPosition = 150;
-    title->setPos(titleXPosition, titleYPosition);
-    scene->addItem(title);
+    drawTitle(titleYPosition, 50);
 
     // create start button
     ActionButton *startButton = new ActionButton("Play");
@@ -59,7 +55,7 @@ void GameView::displayMainMenu() {
 }
 
 void GameView::startGame() {
-    // clear the screen
+
     scene->clear();
 
     boardViewModel = BoardViewModel();
@@ -67,17 +63,19 @@ void GameView::startGame() {
     drawBoard();
     drawSettingsPanel();
     drawUserPanel();
+    int titleYPosition = Constants::defaultMargin;
+    drawTitle(titleYPosition, 40);
     gameStarted = true;
 }
 
 void GameView::quitGame() {
-    gameStarted = false;
+    close();
 }
 
 void GameView::resetGame() {
     gameStarted = false;
     scene->clear();
-    displayMainMenu();
+    startGame();
 }
 
 void GameView::drawBoard() {
@@ -88,14 +86,23 @@ void GameView::drawBoard() {
 }
 
 void GameView::drawSettingsPanel() {
-//    QGraphicsTextItem *settingsTitle = new QGraphicsTextItem("Settings");
-//    settingsTitle->setPos(700, 100);
-//    scene->addItem(settingsTitle);
+    // create quit button
+    ActionButton *resetButton = new ActionButton("Reset game");
+    double resetXPosition = 690 + resetButton->boundingRect().width()/2;
+    double resetYPosition = 420;
+    resetButton->setPos(resetXPosition, resetYPosition);
 
-//    QGraphicsRectItem *settingsPanel = new QGraphicsRectItem(700, 100, 300, 480);
-//    Utils::setBackgroundColor(Qt::blue, settingsPanel);
-//    settingsPanel->setOpacity(0.5);
-//    scene->addItem(settingsPanel);
+    connect(resetButton, SIGNAL(buttonPressed()), this, SLOT(resetGame()));
+    scene->addItem(resetButton);
+
+    // create quit button
+    ActionButton *quitButton = new ActionButton("Quit game");
+    double quitXPosition = 690 + quitButton->boundingRect().width()/2;
+    double quitYPosition = 490;
+    quitButton->setPos(quitXPosition, quitYPosition);
+
+    connect(quitButton, SIGNAL(buttonPressed()), this, SLOT(quitGame()));
+    scene->addItem(quitButton);
 }
 
 void GameView::drawUserPanel() {
@@ -109,7 +116,7 @@ PlayerView* GameView::drawViewForUser(PlayerType player) {
     PlayerView *playerView = new PlayerView();
 
     int xPosition = 80;
-    int yPosition = 80;
+    int yPosition = BoardView::startYPosition;
 
     switch (player) {
     case PlayerType::black:
@@ -125,6 +132,13 @@ PlayerView* GameView::drawViewForUser(PlayerType player) {
     playerView->setPlayer(player);
 
     return playerView;
+}
+
+void GameView::drawTitle(double yPosition, int fontSize) {
+    QGraphicsTextItem *title = Utils::createTextItem("Chess Game", fontSize, Qt::white);
+    double xPosition = this->width()/2 - title->boundingRect().width()/2;
+    title->setPos(xPosition, yPosition);
+    scene->addItem(title);
 }
 
 void GameView::mousePressEvent(QMouseEvent *event) {
@@ -244,5 +258,4 @@ void GameView::showCongratulationsScreen(PlayerType winner) {
 
     CongratulationsView *congratulationsView = new CongratulationsView(winner);
     congratulationsView->setRect(0, 0, viewWidth, viewHeight);
-    scene->addItem(congratulationsView);
 }

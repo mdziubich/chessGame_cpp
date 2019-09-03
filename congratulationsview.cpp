@@ -41,6 +41,7 @@ CongratulationsView::CongratulationsView(PlayerType winner) {
     double buttonYPosition = 500;
     actionButton->setPos(buttonXPosition, buttonYPosition);
 
-    connect(actionButton, SIGNAL(buttonPressed()), game, SLOT(resetGame()));
+    connect(actionButton, SIGNAL(buttonPressed()), game, SLOT(quitGame()));
     game->scene->addItem(actionButton);
+    game->scene->addItem(this);
 }
