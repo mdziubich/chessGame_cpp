@@ -185,6 +185,33 @@ bool BoardViewModel::isKingInCheck(PlayerType owner,
     return false;
 }
 
+bool BoardViewModel::didPromoteActivePawn() {
+    if (!activePawn) {
+        return false;
+    }
+
+    if (activePawn->type != PawnType::pawn) {
+        return false;
+    }
+
+    switch (activePawn->owner) {
+    case PlayerType::black:
+        if (activePawn->position.y == 7) {
+            activePawn->type = PawnType::queen;
+            return true;
+        }
+        break;
+    case PlayerType::white:
+        if (activePawn->position.y == 0) {
+            activePawn->type = PawnType::queen;
+            return true;
+        }
+        break;
+    }
+
+    return false;
+}
+
 void BoardViewModel::switchRound() {
     switch (whosTurn) {
     case PlayerType::black:

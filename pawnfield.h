@@ -2,6 +2,7 @@
 #define PAWN_H
 
 #include <QGraphicsRectItem>
+#include <QLabel>
 #include "boardposition.h"
 #include "pawnmodel.h"
 
@@ -14,10 +15,12 @@ public:
 
     BoardPosition getPosition();
     void setPosition(BoardPosition position);
+    void setImage(QString imagePath);
+
 private:
     BoardPosition position;
-
-    void setInitialImage(QString imagePath);
+    QLabel *imageLabel;
+    QPixmap image;
 };
 
 #endif // PAWN_H

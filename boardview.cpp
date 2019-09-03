@@ -82,6 +82,17 @@ void BoardView::setPawnMoveCheckWarning(bool visible) {
     checkWarningDescriptionTextItem->setOpacity(opacity);
 }
 
+void BoardView::promotePawnAtBoardPosition(BoardPosition boardPosition) {
+    PawnField *pawn = getPawnAtBoardPosition(boardPosition);
+    QString imageFileName;
+    if (pawn->getPosition().y == 7) {
+        imageFileName = ":Images/queen_black.svg";
+    } else {
+        imageFileName = ":Images/queen_white.svg";
+    }
+    pawn->setImage(imageFileName);
+}
+
 PawnField* BoardView::getPawnAtMousePosition(QPoint point) {
     for (int i = 0; i < pawns.length(); i++) {
         PawnField *pawn = pawns[i];

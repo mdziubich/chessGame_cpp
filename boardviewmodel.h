@@ -27,6 +27,7 @@ public:
     bool validatePawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate = nullptr, BoardPosition *requestedActivePawnPosition = nullptr);
     bool didRemoveEnemyOnBoardPosition(BoardPosition boardPosition);
     bool isKingInCheck(PlayerType owner, bool isCheckingActivePlayer, BoardPosition positionToMoveActivePlayer);
+    bool didPromoteActivePawn();
     void switchRound();
 
     bool isCastlingAvailable();

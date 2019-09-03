@@ -25,6 +25,7 @@ public:
     void placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition);
     void removePawnAtBoardPosition(BoardPosition boardPosition);
     void setPawnMoveCheckWarning(bool visible);
+    void promotePawnAtBoardPosition(BoardPosition boardPosition);
 
 private:
     QList<BoardField*> fields;

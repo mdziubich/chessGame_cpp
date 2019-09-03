@@ -208,6 +208,9 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
     moveActivePawnToSelectedPoint(point);
 
     // check if pawn can be promoted
+    if (boardViewModel.didPromoteActivePawn()) {
+        board->promotePawnAtBoardPosition(boardPosition);
+    }
 
     // check for opposite player king's check
     switch (boardViewModel.getActivePawn()->owner) {
@@ -219,7 +222,7 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
         break;
     }
 
-    // update actibe player check state
+    // update active player check state
     setCheckStateOnPlayerView(boardViewModel.getActivePawn()->owner, isKingInCheck);
 
     // check if game is over
