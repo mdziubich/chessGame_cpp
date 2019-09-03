@@ -30,9 +30,9 @@ void BoardView::draw() {
     drawCheckWarningTextItems();
 }
 
-void BoardView::initializePawnFields(QList<PawnModel*> pawns) {
+void BoardView::initializePawnFields(QList<BasePawnModel*> pawns) {
     for (int i = 0; i < pawns.length(); i++) {
-        PawnModel *pawnModel = pawns[i];
+        BasePawnModel *pawnModel = pawns[i];
         PawnField *pawn = new PawnField(pawnModel->position, pawnModel->imagePath, this);
 
         int pawnXPosition = startXPosition + pawnModel->position.x * BoardField::defaultWidthHeight;
@@ -45,7 +45,7 @@ void BoardView::initializePawnFields(QList<PawnModel*> pawns) {
     }
 }
 
-void BoardView::moveActivePawnToMousePosition(QPoint point, PawnModel *pawn) {
+void BoardView::moveActivePawnToMousePosition(QPoint point, BasePawnModel *pawn) {
     int xPosition = point.x() - BoardField::defaultWidthHeight/2;
     int yPosition = point.y() - BoardField::defaultWidthHeight/2;
     PawnField *pawnField = getPawnAtBoardPosition(pawn->position);
@@ -55,7 +55,7 @@ void BoardView::moveActivePawnToMousePosition(QPoint point, PawnModel *pawn) {
     }
 }
 
-void BoardView::placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition) {
+void BoardView::placeActivePawnAtBoardPosition(BasePawnModel *pawn, BoardPosition boardPosition) {
     PawnField *pawnField = getPawnAtBoardPosition(pawn->position);
 
     if (pawnField) {

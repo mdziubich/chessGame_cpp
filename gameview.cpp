@@ -261,7 +261,7 @@ void GameView::releaseActivePawn() {
         return;
     }
 
-    PawnModel *activePawn = boardViewModel.getActivePawn();
+    BasePawnModel *activePawn = boardViewModel.getActivePawn();
     board->placeActivePawnAtBoardPosition(activePawn, activePawn->position);
     board->setPawnMoveCheckWarning(false);
     boardViewModel.discardActivePawn();

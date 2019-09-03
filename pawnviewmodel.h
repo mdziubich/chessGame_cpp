@@ -2,7 +2,7 @@
 #define PAWNMANAGER_H
 
 #include <QString>
-#include "pawnmodel.h"
+#include "basepawnmodel.h"
 
 class PawnViewModel {
 

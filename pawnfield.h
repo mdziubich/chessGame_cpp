@@ -4,7 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QLabel>
 #include "boardposition.h"
-#include "pawnmodel.h"
+#include "basepawnmodel.h"
 
 class PawnField: public QGraphicsRectItem {
 

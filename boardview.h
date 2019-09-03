@@ -18,11 +18,11 @@ public:
 
     QList<BoardField*> getFields();
     void draw();
-    void initializePawnFields(QList<PawnModel*> pawns);
+    void initializePawnFields(QList<BasePawnModel*> pawns);
     PawnField* getPawnAtBoardPosition(BoardPosition boardPosition);
     PawnField* getPawnAtMousePosition(QPoint point);
-    void moveActivePawnToMousePosition(QPoint point, PawnModel *pawn);
-    void placeActivePawnAtBoardPosition(PawnModel *pawn, BoardPosition boardPosition);
+    void moveActivePawnToMousePosition(QPoint point, BasePawnModel *pawn);
+    void placeActivePawnAtBoardPosition(BasePawnModel *pawn, BoardPosition boardPosition);
     void removePawnAtBoardPosition(BoardPosition boardPosition);
     void setPawnMoveCheckWarning(bool visible);
     void promotePawnAtBoardPosition(BoardPosition boardPosition);

@@ -2,7 +2,7 @@
 #define CONGRATULATIONSVIEW_H
 
 #include <QGraphicsRectItem>
-#include "pawnmodel.h"
+#include "basepawnmodel.h"
 
 class CongratulationsView: public QObject, public QGraphicsRectItem {
     Q_OBJECT

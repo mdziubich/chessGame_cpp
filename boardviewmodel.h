@@ -4,8 +4,8 @@
 #include <QPoint>
 #include "boardposition.h"
 #include "pawnfield.h"
-#include "pawnmodel.h"
-#include "pawnviewModel.h"
+#include "basepawnmodel.h"
+#include "pawnviewmodel.h"
 
 class BoardViewModel {
 
@@ -14,9 +14,9 @@ public:
 
     bool isEnPassantAvailable;
 
-    QList<PawnModel*> getBlackPawns();
-    QList<PawnModel*> getWhitePawns();
-    PawnModel* getActivePawn();
+    QList<BasePawnModel*> getBlackPawns();
+    QList<BasePawnModel*> getWhitePawns();
+    BasePawnModel* getActivePawn();
     PlayerType getWhosTurn();
     PlayerType* getWinner();
     void setActivePawnForField(PawnField *pawn);
@@ -24,36 +24,25 @@ public:
     void discardActivePawn();
     BoardPosition getBoardPositionForMousePosition(QPoint position);
     bool validatePawnPalcementForMousePosition(QPoint position);
-    bool validatePawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate = nullptr, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool validatePawnMove(BoardPosition positionToMove, BasePawnModel *pawnToValidate = nullptr, BoardPosition *requestedActivePawnPosition = nullptr);
     bool didRemoveEnemyOnBoardPosition(BoardPosition boardPosition);
     bool isKingInCheck(PlayerType owner, bool isCheckingActivePlayer, BoardPosition positionToMoveActivePlayer);
     bool didPromoteActivePawn();
     void switchRound();
 
-    bool isCastlingAvailable();
-    bool isPawnPromotionAvailable();
-    bool shouldReplaceActivePawnWithQueen();
-
 private:
-    PawnModel *activePawn;
+    BasePawnModel *activePawn;
     PlayerType whosTurn;
-    QList<PawnModel*> blackPawns;
-    QList<PawnModel*> whitePawns;
+    QList<BasePawnModel*> blackPawns;
+    QList<BasePawnModel*> whitePawns;
     PawnViewModel pawnViewModel;
     PlayerType *winner;
 
     void initializePawns();
     void initializePawnsForRow(int rowNumber, PlayerType owner);
-    PawnModel* getPawnOnBoardPosition(BoardPosition baordPosition);
-    bool validateKingPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate);
-    bool validateQueenPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
-    bool validateRookPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
-    bool validateBishopPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
-    bool validateKnightPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate);
-    bool validateBasePawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
-    bool validateAnotherPawnIntersection(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
-    bool pawnWantsToMoveByOneField(BoardPosition positionToMove, PawnModel *pawnToValidate);
-    bool validateKingsCheckForPawns(QList<PawnModel*> pawns, bool isCheckingActivePlayer, PawnModel *king, BoardPosition positionToMoveActivePlayer);
+    BasePawnModel* getPawnOnBoardPosition(BoardPosition baordPosition);
+    bool validateAnotherPawnIntersection(BoardPosition positionToMove, BasePawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition = nullptr);
+    bool validateKingsCheckForPawns(QList<BasePawnModel*> pawns, bool isCheckingActivePlayer, BasePawnModel *king, BoardPosition positionToMoveActivePlayer);
 };
 
 #endif // BOARDVIEWMODEL_H

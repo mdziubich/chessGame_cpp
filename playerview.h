@@ -3,7 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
-#include "pawnmodel.h"
+#include "basepawnmodel.h"
 
 class PlayerView: public QGraphicsRectItem  {
 

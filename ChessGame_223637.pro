@@ -26,6 +26,8 @@ CONFIG += c++11
 
 SOURCES += \
         actionbutton.cpp \
+        basepawnmodel.cpp \
+        bishoppawnmodel.cpp \
         boardfield.cpp \
         boardframefield.cpp \
         boardview.cpp \
@@ -33,15 +35,21 @@ SOURCES += \
         congratulationsview.cpp \
         constants.cpp \
         gameview.cpp \
+        kingpawnmodel.cpp \
+        knightpawnmodel.cpp \
         main.cpp \
         pawnfield.cpp \
-        pawnmodel.cpp \
+        pawnpawnmodel.cpp \
         pawnviemodel.cpp \
         playerview.cpp \
+        queenpawnmodel.cpp \
+        rookpawnmodel.cpp \
         utils.cpp
 
 HEADERS += \
         actionbutton.h \
+        basepawnmodel.h \
+        bishoppawnmodel.h \
         boardfield.h \
         boardframefield.h \
         boardposition.h \
@@ -51,10 +59,14 @@ HEADERS += \
         constants.h \
         gameview.h \
         helpers.h \
+        kingpawnmodel.h \
+        knightpawnmodel.h \
         pawnfield.h \
-        pawnmodel.h \
+        pawnpawnmodel.h \
         pawnviewmodel.h \
         playerview.h \
+        queenpawnmodel.h \
+        rookpawnmodel.h \
         utils.h
 
 FORMS +=

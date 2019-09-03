@@ -1,8 +1,6 @@
 #include "pawnviewmodel.h"
 
-PawnViewModel::PawnViewModel() {
-
-}
+PawnViewModel::PawnViewModel() {}
 
 QString PawnViewModel::getImagePath(PawnType type, PlayerType owner) {
     QString imageFileName;

@@ -1,5 +1,0 @@
-#ifndef PAWNCOLORTYPE_H
-#define PAWNCOLORTYPE_H
-
-
-#endif // PAWNCOLORTYPE_H
