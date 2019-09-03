@@ -207,19 +207,20 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
     // move active pawn to new position
     moveActivePawnToSelectedPoint(point);
 
-    // check for rook's castling
-
     // check if pawn can be promoted
 
     // check for opposite player king's check
     switch (boardViewModel.getActivePawn()->owner) {
     case PlayerType::black:
-        whitePlayerView->setIsInCheck(boardViewModel.isKingInCheck(PlayerType::white, false, boardPosition));
+        setCheckStateOnPlayerView(PlayerType::white, boardViewModel.isKingInCheck(PlayerType::white, false, boardPosition));
         break;
     case PlayerType::white:
-        blackPlayerView->setIsInCheck(boardViewModel.isKingInCheck(PlayerType::black, false, boardPosition));
+        setCheckStateOnPlayerView(PlayerType::black, boardViewModel.isKingInCheck(PlayerType::black, false, boardPosition));
         break;
     }
+
+    // update actibe player check state
+    setCheckStateOnPlayerView(boardViewModel.getActivePawn()->owner, isKingInCheck);
 
     // check if game is over
     if (boardViewModel.getWinner()) {
@@ -234,7 +235,18 @@ void GameView::handleSelectingPointForActivePawnByMouse(QPoint point) {
     whitePlayerView->setActive(boardViewModel.getWhosTurn() == PlayerType::white);
 }
 
-//update pawn field position and pawn model position
+void GameView::setCheckStateOnPlayerView(PlayerType player, bool isInCheck) {
+    switch (player) {
+    case PlayerType::black:
+        blackPlayerView->setIsInCheck(isInCheck);
+        break;
+    case PlayerType::white:
+        whitePlayerView->setIsInCheck(isInCheck);
+        break;
+    }
+}
+
+// update pawn field position and pawn model position
 void GameView::moveActivePawnToSelectedPoint(QPoint point) {
     BoardPosition boardPosition = boardViewModel.getBoardPositionForMousePosition(point);
     board->placeActivePawnAtBoardPosition(boardViewModel.getActivePawn(), boardPosition);
@@ -248,6 +260,7 @@ void GameView::releaseActivePawn() {
 
     PawnModel *activePawn = boardViewModel.getActivePawn();
     board->placeActivePawnAtBoardPosition(activePawn, activePawn->position);
+    board->setPawnMoveCheckWarning(false);
     boardViewModel.discardActivePawn();
 }
 

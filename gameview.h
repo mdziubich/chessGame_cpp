@@ -41,6 +41,7 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void selectPawn(PawnField *pawn);
     void handleSelectingPointForActivePawnByMouse(QPoint point);
+    void setCheckStateOnPlayerView(PlayerType player, bool isInCheck);
     void moveActivePawnToSelectedPoint(QPoint point);
     void releaseActivePawn();
     void showCongratulationsScreen(PlayerType winner);

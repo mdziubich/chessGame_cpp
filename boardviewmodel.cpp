@@ -257,7 +257,7 @@ bool BoardViewModel::shouldReplaceActivePawnWithQueen() {
 bool BoardViewModel::validateKingPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
-    if (pawn && pawn->owner == whosTurn) {
+    if (pawn && pawn->owner == pawnToValidate->owner) {
         return false;
     }
 
@@ -267,7 +267,7 @@ bool BoardViewModel::validateKingPawnMove(BoardPosition positionToMove, PawnMode
 bool BoardViewModel::validateQueenPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
-    if (pawn && pawn->owner == whosTurn) {
+    if (pawn && pawn->owner == pawnToValidate->owner) {
         return false;
     }
 
@@ -281,11 +281,11 @@ bool BoardViewModel::validateQueenPawnMove(BoardPosition positionToMove, PawnMod
 bool BoardViewModel::validateRookPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
-    if (pawn && pawn->owner == whosTurn) {
+    if (pawn && pawn->owner == pawnToValidate->owner) {
         return false;
     }
 
-    if ((positionToMove.x != pawnToValidate->position.x) && (positionToMove.y != pawnToValidate->position.y)) {
+    if ((positionToMove.x != pawnToValidate->position.x && positionToMove.y != pawnToValidate->position.y)) {
         return false;
     }
 
@@ -295,7 +295,7 @@ bool BoardViewModel::validateRookPawnMove(BoardPosition positionToMove, PawnMode
 bool BoardViewModel::validateBishopPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate, BoardPosition *requestedActivePawnPosition) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
-    if (pawn && pawn->owner == whosTurn) {
+    if (pawn && pawn->owner == pawnToValidate->owner) {
         return false;
     }
 
@@ -312,7 +312,7 @@ bool BoardViewModel::validateBishopPawnMove(BoardPosition positionToMove, PawnMo
 bool BoardViewModel::validateKnightPawnMove(BoardPosition positionToMove, PawnModel *pawnToValidate) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
-    if (pawn && pawn->owner == whosTurn) {
+    if (pawn && pawn->owner == pawnToValidate->owner) {
         return false;
     }
 
@@ -349,7 +349,7 @@ bool BoardViewModel::validateBasePawnMove(BoardPosition positionToMove,
                                           BoardPosition *requestedActivePawnPosition) {
     PawnModel *pawn = getPawnOnBoardPosition(positionToMove);
 
-    if (pawn && pawn->owner == whosTurn) {
+    if (pawn && pawn->owner == pawnToValidate->owner) {
         return false;
     }
 
@@ -379,12 +379,16 @@ bool BoardViewModel::validateBasePawnMove(BoardPosition positionToMove,
     }
 
     if (wantsToMoveByOneField) {
-        if (xDiference == 0) {
+        if (requestedActivePawnPosition && xDiference == 0)  {
+            return (wantsToMoveInGoodDirection &&
+                    requestedActivePawnPosition->x != positionToMove.x &&
+                    requestedActivePawnPosition->y != positionToMove.y);
+        } else if (xDiference == 0) {
             return (wantsToMoveInGoodDirection && !pawn);
         } else if (requestedActivePawnPosition) {
             return (wantsToMoveInGoodDirection &&
                     requestedActivePawnPosition->x == positionToMove.x &&
-                    requestedActivePawnPosition->y == positionToMove.y); // TODO: adjust to En_passant
+                    requestedActivePawnPosition->y == positionToMove.y) || (wantsToMoveInGoodDirection && pawn);
         } else {
             return (wantsToMoveInGoodDirection && pawn);
         }
@@ -410,7 +414,7 @@ bool BoardViewModel::validateAnotherPawnIntersection(BoardPosition positionToMov
         if (xDiference < 0) {
             if (yDiference == 0) {
                 positionToCheck = { pawnToValidate->position.x + (xDiference + i), pawnToValidate->position.y };
-            } else if (yDiference < pawnToValidate->position.y) {
+            } else if (yDiference < 0) {
                 positionToCheck = { pawnToValidate->position.x + (xDiference + i), pawnToValidate->position.y + (yDiference + i) };
             } else {
                 positionToCheck = { pawnToValidate->position.x + (xDiference + i), pawnToValidate->position.y + (yDiference - i) };
@@ -431,13 +435,20 @@ bool BoardViewModel::validateAnotherPawnIntersection(BoardPosition positionToMov
             }
         }
 
-        if (requestedActivePawnPosition && positionToCheck.x == requestedActivePawnPosition->x && positionToCheck.y == requestedActivePawnPosition->y) {
+        PawnModel *pawnToCheck = getPawnOnBoardPosition(positionToCheck);
+
+        if (requestedActivePawnPosition &&
+                positionToCheck.x != positionToMove.x &&
+                positionToCheck.y != positionToMove.y &&
+                positionToCheck.x == requestedActivePawnPosition->x &&
+                positionToCheck.y == requestedActivePawnPosition->y) {
             return false;
         }
 
-        PawnModel *pawnToCheck = getPawnOnBoardPosition(positionToCheck);
-
-        if (pawnToCheck) {
+        // if we check for pawn that is on the position that the pawn wants to move by we need to check
+        // if this position is not position that the pawm wants to move to
+        if (pawnToCheck &&
+                (pawnToCheck->position.x != positionToMove.x || pawnToCheck->position.y != positionToMove.y)) {
             return false;
         }
     }
@@ -459,21 +470,23 @@ bool BoardViewModel::validateKingsCheckForPawns(QList<PawnModel*> pawns,
                                                 BoardPosition positionToMoveActivePlayer) {
     bool isInCheck = false;
 
+    // chech every oppisite players pawn for kings check
     for (int i = 0; i < pawns.length(); i++) {
         PawnModel *pawn = pawns[i];
         // when checking for active player check we need to check first if the active player pawn is king,
         // if it's a king then check if position that wants to move the king to
         // is able to be taken in the next move by the opposite player
-        if (isCheckingActivePlayer && activePawn->type == PawnType::king && validatePawnMove(positionToMoveActivePlayer, pawn, &positionToMoveActivePlayer)) {
-            isInCheck = true;
+        if (isCheckingActivePlayer && activePawn->type == PawnType::king) {
+            if (validatePawnMove(positionToMoveActivePlayer, pawn, &positionToMoveActivePlayer)) {
+                isInCheck = true;
+            }
         } else if (isCheckingActivePlayer) {
             // if the active player pawn is not a king then check if active player wants to move to
             // the place of opposite player pawn that could capture active player king in the next move.
             // If he wants to move to other field then check if the field he wants to take will take active
             // player king from the check state
 
-            if (positionToMoveActivePlayer.x != pawn->position.x &&
-                    positionToMoveActivePlayer.y != pawn->position.y &&
+            if ((positionToMoveActivePlayer.x != pawn->position.x || positionToMoveActivePlayer.y != pawn->position.y) &&
                     validatePawnMove(king->position, pawn, &positionToMoveActivePlayer)) {
                 isInCheck = true;
             }
